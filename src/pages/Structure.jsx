@@ -262,7 +262,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
 
               </div>
@@ -300,7 +300,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
 
               </div>
@@ -336,7 +336,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
                 <p className="text-gray-600 mt-1">{d.email}</p>
 
@@ -376,7 +376,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
                 <p className="text-gray-600 mt-1">{d.email}</p>
 
@@ -416,7 +416,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
                 <p className="text-gray-600 mt-1">{d.email}</p>
 
@@ -456,7 +456,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
                 <p className="text-gray-600 mt-1">{d.email}</p>
 
@@ -497,7 +497,7 @@ export default function OrganizationalStructure() {
                   />
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-[#899616]">{d.name}</h3>
+                <h3 className="mt-6 text-xl font-bold text-[rgb(185,191,133)]">{d.name}</h3>
                 <p className="text-gray-600 text-lg mt-1">{d.role}</p>
                 <p className="text-gray-600 mt-1">{d.email}</p>
 
@@ -576,15 +576,15 @@ export default function OrganizationalStructure() {
 
         {/* LEVEL 1: MEMBERS */}
         <div className="text-center">
-          <p className="text-[#899616] font-bold text-xl">Members</p>
+          <p className="text-[rgb(185,191,133)] font-bold text-xl">Members</p>
           <div className="h-16 w-px mb-2 mt-2 bg-black mx-auto"></div>
 
           {/* LEVEL 2: BOARD OF DIRECTORS */}
-          <p className="text-[#899616] font-bold text-xl">Board Of Directors</p>
+          <p className="text-[rgb(185,191,133)] font-bold text-xl">Board Of Directors</p>
 
           <div className="relative flex justify-center items-center my-2">
             <div className="h-16 w-px bg-black"></div>
-            <p className="absolute right-[25%] lg:right-[36%] text-[#899616] text-xl font-bold">
+            <p className="absolute right-[25%] lg:right-[36%] text-[rgb(185,191,133)] text-xl font-bold">
               <span className="border-2 border-black border-dashed w-20 inline-block mr-4"></span>
               Advisor
             </p>
@@ -592,7 +592,7 @@ export default function OrganizationalStructure() {
 
           {/* LEVEL 3: EXECUTIVE DIRECTOR */}
           <div>
-            <p className="text-[#899616] font-bold text-xl">
+            <p className="text-[rgb(185,191,133)] font-bold text-xl">
               {executiveDirector.name}
             </p>
             <p className="text-gray-700">{executiveDirector.position}</p>
@@ -614,7 +614,7 @@ export default function OrganizationalStructure() {
                   <div className="hidden md:block h-10 w-px mb-2 bg-black mx-auto"></div>
 
                   {/* Manager */}
-                  <p className="font-bold text-[#899616] text-lg">{dept.manager.name}</p>
+                  <p className="font-bold text-[rgb(185,191,133)] text-lg">{dept.manager.name}</p>
                   <p className="text-gray-600">{dept.manager.position}</p>
 
 
@@ -623,7 +623,7 @@ export default function OrganizationalStructure() {
                     {sortStaffRole(dept.staff).map((s, idx) => (
                       <div key={idx} className="mt-4">
                         <div className="hidden md:block h-10 w-px bg-black mx-auto mb-2"></div>
-                        <p className="font-bold text-[#899616] text-lg">{s.name}</p>
+                        <p className="font-bold text-[rgb(185,191,133)] text-lg">{s.name}</p>
                         <p className="text-gray-600">{s.position}</p>
                       </div>
                     ))}

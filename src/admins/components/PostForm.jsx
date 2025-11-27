@@ -74,24 +74,19 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
     form.append("published_at", publishedAt);
     form.append("department", department);
 
-    // Single FILE
+    // single file
     if (file) {
       form.append("file", file);
     }
 
-    // Keep old images
-    oldImages.forEach((img, i) => {
-      form.append(`old_images[${i}]`, img);
-    });
-
-    // Add new images
-    newImages.forEach((file) => {
-      form.append("images[]", file);
+    // ONLY send new images
+    newImages.forEach((img) => {
+      form.append("images[]", img);
     });
 
     try {
       if (editingPost) {
-        form.append("_method", "PUT");   // ⭐ REQUIRED ⭐
+        form.append("_method", "PUT");
         await api.post(`/posts/${editingPost.id}`, form);
         setStatus({
           open: true,
@@ -106,17 +101,16 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
           message: "Post created successfully!",
         });
       }
-
-      // ❌ REMOVE onSaved() here
     } catch (error) {
       console.log("Error:", error.response?.data);
       setStatus({
         open: true,
         type: "error",
-        message: "Failed to save post. Please check your input.",
+        message: "Failed to save post.",
       });
     }
   };
+
 
   return (
     <>
