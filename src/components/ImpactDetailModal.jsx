@@ -110,7 +110,12 @@ export default function ImpactDetailModal({ open, impact, onClose }) {
                     </div>
                 )}
 
-
+                <h2 className="text-lg md:text-xl mb-3 font-semibold text-green-700">
+                    Project Name: 
+                    <span className="text-gray-700 mt-1 leading-relaxed text-lg font-medium">
+                        {projects.find(p => p.id === impact.project_id)?.name}
+                    </span>
+                </h2>
 
 
                 {/* PROGRAM BADGES */}
