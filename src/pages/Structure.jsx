@@ -52,22 +52,25 @@ export default function OrganizationalStructure() {
       "assistant",
       "admin",
       "janitor",
-      "admin intern",
-      "intern",
     ];
 
     const getRank = (role = "") => {
-      role = role.toLowerCase();
+      role = role.toLowerCase().trim();
 
+      // 1. If role contains "intern", always return LAST
+      if (role.includes("intern")) return 999;
+
+      // 2. Otherwise match priority list
       for (let i = 0; i < priority.length; i++) {
         if (role.includes(priority[i])) return i;
       }
 
-      return 999; // fallback lowest priority
+      return 500; // fallback for unknown roles
     };
 
     return [...list].sort((a, b) => getRank(a.role) - getRank(b.role));
   };
+
 
   // SORT STAFF ONLY (NOT MANAGERS)
   const sortStaffRole = (list) => {
