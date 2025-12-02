@@ -181,7 +181,7 @@ export default function MediaContact() {
         </div>
 
         {/* DOCUMENT CARDS */}
-        <div className="col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-8">
 
           {documents.map((doc) => (
             <div
@@ -213,7 +213,7 @@ export default function MediaContact() {
               )}
 
               {/* TITLE */}
-              <p className="mt-2 text-center font-semibold text-gray-800 leading-snug line-clamp-2">
+              <p className="mt-2 text-center font-semibold text-gray-800 leading-snug line-clamp-2 p-2">
                 {doc.title}
               </p>
 
