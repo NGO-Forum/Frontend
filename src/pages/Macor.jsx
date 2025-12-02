@@ -12,7 +12,7 @@ export default function SachasPage() {
   
     const loadPosts = async () => {
       try {
-        const res = await api.get("/posts?department=RITI");
+        const res = await api.get("/posts?department=MACOR");
         setPosts(res.data.data || res.data);
       } catch (error) {
         console.error(error);
