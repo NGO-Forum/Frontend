@@ -100,7 +100,7 @@ export default function Libray() {
         </div>
 
         {/* DOCUMENT LIST */}
-        <div className="col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="col-span-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {documents.map((doc) => (
             <div
               key={doc.id}
