@@ -156,7 +156,7 @@ export default function PostCard({ post }) {
         {/* CLOSE BUTTON */}
         <div className="text-right mt-6">
           <button
-            onClick={onClose}
+            onClick={() => setOpen(false)}
             className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
             Close
