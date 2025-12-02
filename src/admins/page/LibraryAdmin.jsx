@@ -97,7 +97,7 @@ export default function LibraryAdmin() {
             {loading && <span className="text-xs text-slate-500">Loading...</span>}
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="h-[80vh] overflow-x-auto">
             <LibraryTable
               librarys={librarys}
               setEditLibrary={(library) => {
