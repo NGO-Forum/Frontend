@@ -198,8 +198,19 @@ export default function MediaContact() {
               </div>
 
               {/* THUMBNAIL */}
-              <PDFThumbnail fileUrl={`http://44.205.95.55/storage/${doc.file_kh}`} className="w-full lg:h-[350px] h-[200px] md:h-[300px]" />
-              {/* <img src={imgUrl(doc.thumbnail)} className="w-full lg:h-[350px] h-[200px] md:h-[300px]" /> */}
+              {doc.file_kh ? (
+                <PDFThumbnail
+                  fileUrl={`http://44.205.95.55/storage/${doc.file_kh}`}
+                  className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
+                />
+              ) : doc.file_en ? (
+                <PDFThumbnail
+                  fileUrl={`http://44.205.95.55/storage/${doc.file_en}`}
+                  className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
+                />
+              ) : (
+                <p className="text-gray-500">No document available</p>
+              )}
 
               {/* TITLE */}
               <p className="mt-2 text-center font-semibold text-gray-800 leading-snug line-clamp-2">

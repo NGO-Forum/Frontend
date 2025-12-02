@@ -112,8 +112,12 @@ export default function Libray() {
                 {doc.type}
               </div>
 
-              {doc.file_kh && (
+              {doc.file_kh ? (
                 <PDFThumbnail fileUrl={`http://44.205.95.55/storage/${doc.file_kh}`} />
+              ) : (
+                doc.file_en && (
+                  <PDFThumbnail fileUrl={`http://44.205.95.55/storage/${doc.file_en}`} />
+                )
               )}
 
               <p className="mt-2 text-center font-semibold text-gray-800 line-clamp-2">
