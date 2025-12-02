@@ -91,7 +91,7 @@ export default function LibraryAdmin() {
         </div>
 
         {/* TABLE */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 max-h-[80vh] scrollbar overflow-auto">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 max-h-[76vh] scrollbar overflow-auto">
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
             <h2 className="font-semibold text-green-700">Documents List</h2>
             {loading && <span className="text-xs text-slate-500">Loading...</span>}
