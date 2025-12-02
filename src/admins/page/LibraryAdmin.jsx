@@ -97,7 +97,7 @@ export default function LibraryAdmin() {
             {loading && <span className="text-xs text-slate-500">Loading...</span>}
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-y-auto max-h-[80vh] scrollbar">
             <LibraryTable
               librarys={librarys}
               setEditLibrary={(library) => {
