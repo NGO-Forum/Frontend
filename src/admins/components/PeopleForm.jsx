@@ -182,7 +182,7 @@ export default function PeopleForm({
               <option value="director">Directors</option>
               <option value="advisor">Advisors</option>
               <option value="sachas">SACHAS</option>
-              <option value="pili">PILI</option>
+              <option value="pili">PALI</option>
               <option value="riti">RITI</option>
               <option value="macor">MACOR</option>
               <option value="executiveDirector">Executive Director</option>
