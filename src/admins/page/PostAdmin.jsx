@@ -165,7 +165,7 @@ export default function PostAdmin() {
       </div>
 
       {/* PAGINATION */}
-      <div className="flex justify-center items-center gap-4 mt-6 mb-10">
+      <div className="flex justify-center items-center gap-4 mt-6 mb-6">
         <button
           disabled={page === 1}
           onClick={() => setPage((prev) => prev - 1)}
