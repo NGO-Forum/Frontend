@@ -30,7 +30,7 @@ export default function LibraryTable({ librarys, setEditLibrary, onDelete }) {
   }
 
   return (
-    <div>
+    <div className="h-[80vh] overflow-auto">
       <table className="w-full text-sm">
         <thead className="bg-green-700 text-white">
           <tr>
