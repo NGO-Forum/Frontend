@@ -48,8 +48,8 @@ export default function DocumentTable({ documents, setEditDoc, onDelete }) {
             <tr key={doc.id} className="hover:bg-slate-50">
               <td className="px-4 py-1">{doc.title}</td>
 
-              <td className="px-4 py-1">
-                <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border whitespace-nowrap max-w-[200px] truncate">
+              <td className="px-4 py-1 whitespace-nowrap max-w-[200px] truncate">
+                <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border">
                   {doc.type}
                 </span>
               </td>
