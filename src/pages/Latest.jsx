@@ -39,9 +39,9 @@ export default function Latest() {
     setPosts(data);
 
     // For sidebar always get latest 9 posts
-    const rec = await api.get("/posts", { params: { limit: 9 } });
+    const rec = await api.get("/posts", { params: { limit: 4 } });
     const recData = rec.data.data || rec.data;
-    setRecent(recData.slice(0, 9));
+    setRecent(recData.slice(0, 4));
 
     setLastPage(res.data.last_page);
   };
