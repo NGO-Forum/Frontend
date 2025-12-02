@@ -87,26 +87,29 @@ export default function ProjectForm({ project, onClose, onSave }) {
     const handleSubmit = () => {
         const fd = new FormData();
 
-        Object.entries(form).forEach(([key, value]) => {
-            if (key === "images" || key === "oldImages" || key === "removeImages") {
-                return; // handle separately
-            }
+        // basic fields
+        fd.append("name", form.name);
+        fd.append("summary", form.summary);
+        fd.append("duration_start", form.duration_start);
+        fd.append("duration_end", form.duration_end);
+        fd.append("donor", form.donor);
+        fd.append("department", form.department);
+        fd.append("target_areas", form.target_areas);
+        fd.append("target_groups", form.target_groups);
 
-            if (Array.isArray(value)) {
-                value.forEach((item, index) => fd.append(`${key}[${index}]`, item));
-            } else {
-                fd.append(key, value);
-            }
-        });
+        // arrays
+        form.objectives.forEach((v, i) => fd.append(`objectives[${i}]`, v));
+        form.key_activities.forEach((v, i) => fd.append(`key_activities[${i}]`, v));
 
-        // Append NEW IMAGES
+        // new images
         form.images.forEach((file) => fd.append("images[]", file));
 
-        // Append REMOVE old images
+        // remove images
         form.removeImages.forEach((img) => fd.append("removeImages[]", img));
 
         onSave(fd, project?.id || null);
     };
+
 
 
     return (
