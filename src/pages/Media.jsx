@@ -267,18 +267,32 @@ export default function MediaContact() {
         </button>
 
         {/* PAGE NUMBERS */}
-        {[...Array(lastPage)].map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setPage(i + 1)}
-            className={`w-10 h-10 rounded-full font-semibold text-lg lg:text-xl
-                ${page === i + 1
-                ? "bg-green-700 text-white"
-                : "bg-white shadow"}`}
-          >
-            {i + 1}
-          </button>
-        ))}
+        {(() => {
+          // Calculate the 3 pages to show
+          let start = Math.max(1, page - 1);
+          let end = Math.min(lastPage, start + 2);
+
+          // If near the end, shift window back
+          if (end - start < 2) {
+            start = Math.max(1, end - 2);
+          }
+
+          return [...Array(end - start + 1)].map((_, i) => {
+            const pageNum = start + i;
+            return (
+              <button
+                key={pageNum}
+                onClick={() => setPage(pageNum)}
+                className={`w-10 h-10 rounded-full font-semibold text-lg lg:text-xl
+          ${page === pageNum
+                    ? "bg-green-700 text-white"
+                    : "bg-white shadow"}`}
+              >
+                {pageNum}
+              </button>
+            );
+          });
+        })()}
 
         {/* NEXT */}
         <button

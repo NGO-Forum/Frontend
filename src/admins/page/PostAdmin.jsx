@@ -129,7 +129,7 @@ export default function PostAdmin() {
                   />
                 </td>
 
-                <td className="px-4 py-2">{p.title}</td>
+                <td className="px-4 py-2 whitespace-nowrap max-w-[200px] truncate">{p.title}</td>
 
                 <td className="px-4 py-2">
                   {p.published_at
@@ -137,7 +137,7 @@ export default function PostAdmin() {
                     : "-"}
                 </td>
 
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 whitespace-nowrap max-w-[100px] truncate">
                   {p.description ? p.description.substring(0, 60) + "..." : "-"}
                 </td>
 
@@ -174,16 +174,32 @@ export default function PostAdmin() {
           ‹‹
         </button>
 
-        {[...Array(lastPage)].map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setPage(i + 1)}
-            className={`w-10 h-10 rounded-full font-semibold text-lg
-              ${page === i + 1 ? "bg-green-700 text-white" : "bg-white shadow"}`}
-          >
-            {i + 1}
-          </button>
-        ))}
+        {(() => {
+          // Calculate the 3 pages to show
+          let start = Math.max(1, page - 1);
+          let end = Math.min(lastPage, start + 2);
+
+          // If near the end, shift window back
+          if (end - start < 2) {
+            start = Math.max(1, end - 2);
+          }
+
+          return [...Array(end - start + 1)].map((_, i) => {
+            const pageNum = start + i;
+            return (
+              <button
+                key={pageNum}
+                onClick={() => setPage(pageNum)}
+                className={`w-10 h-10 rounded-full font-semibold text-lg lg:text-xl
+          ${page === pageNum
+                    ? "bg-green-700 text-white"
+                    : "bg-white shadow"}`}
+              >
+                {pageNum}
+              </button>
+            );
+          });
+        })()}
 
         <button
           disabled={page === lastPage}
