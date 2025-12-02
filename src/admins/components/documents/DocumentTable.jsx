@@ -49,7 +49,7 @@ export default function DocumentTable({ documents, setEditDoc, onDelete }) {
               <td className="px-4 py-1">{doc.title}</td>
 
               <td className="px-4 py-1">
-                <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border">
+                <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border whitespace-nowrap max-w-[200px] truncate">
                   {doc.type}
                 </span>
               </td>
