@@ -129,7 +129,7 @@ export default function PostAdmin() {
                   />
                 </td>
 
-                <td className="px-4 py-2 whitespace-nowrap max-w-[200px] truncate">{p.title}</td>
+                <td className="px-4 py-2 whitespace-nowrap max-w-[250px] truncate">{p.title}</td>
 
                 <td className="px-4 py-2">
                   {p.published_at
@@ -137,7 +137,7 @@ export default function PostAdmin() {
                     : "-"}
                 </td>
 
-                <td className="px-4 py-2 whitespace-nowrap max-w-[100px] truncate">
+                <td className="px-4 py-2 whitespace-nowrap max-w-[200px] truncate">
                   {p.description ? p.description.substring(0, 60) + "..." : "-"}
                 </td>
 

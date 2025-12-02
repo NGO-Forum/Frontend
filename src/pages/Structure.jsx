@@ -52,6 +52,7 @@ export default function OrganizationalStructure() {
       "assistant",
       "admin",
       "janitor",
+      "admin intern",
       "intern",
     ];
 
@@ -549,14 +550,14 @@ export default function OrganizationalStructure() {
 
                 <hr className="my-5 border-dashed" />
 
-                <p className="text-gray-700 leading-relaxed text-xs">
+                <p className="text-gray-700 leading-relaxed text-sm">
                   {selectedPerson.description || "No bio available."}
                 </p>
 
                 <h3 className="text-xl text-green-700 font-bold mt-6">
                   Education Background
                 </h3>
-                <ul className="text-gray-700 list-disc ml-6 mt-2">
+                <ul className="text-gray-700 list-disc ml-6 mt-2 text-sm">
                   {(selectedPerson.education || []).map((edu, idx) => (
                     <li key={idx}>{edu}</li>
                   ))}
