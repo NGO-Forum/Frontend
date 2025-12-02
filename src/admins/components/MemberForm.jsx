@@ -24,16 +24,17 @@ export default function MemberForm({ member, onClose, onSave }) {
   const handleSubmit = () => {
     const fd = new FormData();
 
-    fd.append("name", form.name);
-    fd.append("link", form.link);
-    fd.append("disabled", form.disabled ? 1 : 0); // ⭐ send to backend
+    fd.append("name", form.name ?? "");
+    fd.append("link", form.link ?? "");
+    fd.append("disabled", form.disabled ? 1 : 0);
 
-    if (form.logo) {
+    if (form.logo instanceof File) {
       fd.append("logo", form.logo);
     }
 
     onSave(fd, member?.id || null);
   };
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
