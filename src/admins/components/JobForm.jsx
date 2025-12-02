@@ -110,13 +110,20 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
           {/* Department */}
           <div className="md:col-span-2">
             <label className="font-semibold text-gray-700">Department</label>
-            <input
+            <select
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-green-500"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              placeholder="e.g. HR, Finance, Program"
-            />
+              required
+            >
+              <option value="">Select Department</option>
+              <option value="PALI">PALI</option>
+              <option value="RITI">RITI</option>
+              <option value="SACHAS">SACHAS</option>
+              <option value="MACOR">MACOR</option>
+            </select>
           </div>
+
 
           {/* Image Upload */}
           <div className="md:col-span-2">
