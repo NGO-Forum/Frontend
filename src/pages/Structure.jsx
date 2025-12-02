@@ -78,6 +78,7 @@ export default function OrganizationalStructure() {
       "assistant",
       "admin",
       "janitor",
+      "admin intern",
       "intern",
     ];
 
