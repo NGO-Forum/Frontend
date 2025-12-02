@@ -63,11 +63,11 @@ export default function MediaContact() {
       setPage(res.data.current_page);
       setLastPage(res.data.last_page);
 
-      // If you want types/years filters, load them separately or remove them.
-      // Currently your backend does NOT return them.
-      // So we empty them:
-      setTypes([]);
-      setYears([]);
+      // Auto-generate filters
+      const typesList = [...new Set(res.data.data.map((d) => d.type))];
+      const yearsList = [...new Set(res.data.data.map((d) => d.year))];
+      setTypes(typesList);
+      setYears(yearsList);;
 
     } catch (err) {
       console.error("Failed to load documents:", err);
