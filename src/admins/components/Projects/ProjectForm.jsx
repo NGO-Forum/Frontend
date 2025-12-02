@@ -87,28 +87,35 @@ export default function ProjectForm({ project, onClose, onSave }) {
     const handleSubmit = () => {
         const fd = new FormData();
 
-        // basic fields
-        fd.append("name", form.name);
-        fd.append("summary", form.summary);
-        fd.append("duration_start", form.duration_start);
-        fd.append("duration_end", form.duration_end);
-        fd.append("donor", form.donor);
-        fd.append("department", form.department);
-        fd.append("target_areas", form.target_areas);
-        fd.append("target_groups", form.target_groups);
+        fd.append("name", form.name || "Untitled");
+        fd.append("summary", form.summary || " ");
 
-        // arrays
-        form.objectives.forEach((v, i) => fd.append(`objectives[${i}]`, v));
-        form.key_activities.forEach((v, i) => fd.append(`key_activities[${i}]`, v));
+        fd.append("duration_start", form.duration_start || "");
+        fd.append("duration_end", form.duration_end || "");
+        fd.append("donor", form.donor || "");
+        fd.append("department", form.department || "");
+        fd.append("target_areas", form.target_areas || "");
+        fd.append("target_groups", form.target_groups || "");
 
-        // new images
+        // Objectives
+        form.objectives.forEach((v, i) => {
+            if (v.trim() !== "") fd.append(`objectives[${i}]`, v);
+        });
+
+        // Key Activities
+        form.key_activities.forEach((v, i) => {
+            if (v.trim() !== "") fd.append(`key_activities[${i}]`, v);
+        });
+
+        // New images
         form.images.forEach((file) => fd.append("images[]", file));
 
-        // remove images
+        // Images to remove
         form.removeImages.forEach((img) => fd.append("removeImages[]", img));
 
         onSave(fd, project?.id || null);
     };
+
 
 
 
