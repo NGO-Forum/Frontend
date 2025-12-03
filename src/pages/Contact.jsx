@@ -1,10 +1,52 @@
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { api } from "../API/api"; // your Axios instance
 
 export default function ContactUs() {
+
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccess("");
+
+    try {
+      const res = await api.post("/contact/send", form);
+
+      if (res.data.success) {
+        setSuccess("Your message has been sent!");
+        setForm({
+          first_name: "",
+          last_name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      }
+    } catch (err) {
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <div className="w-full">
 
-       {/* FIRST SECTION: CONTACT DETAILS */}
+      {/* FIRST SECTION: CONTACT DETAILS */}
       <section className="w-full">
         {/* Banner */}
         <div className="relative w-full h-[120px] sm:h-[150px] md:h-[180px]">
@@ -71,14 +113,18 @@ export default function ContactUs() {
 
           {/* LEFT: CONTACT FORM */}
           <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
 
               <div>
                 <label className="block text-gray-700 mb-1">First name</label>
                 <input
                   type="text"
+                  name="first_name"
+                  value={form.first_name}
+                  onChange={handleChange}
                   placeholder="First name"
                   className="w-full px-4 py-3 bg-gray-100 text-gray-900 rounded-md focus:ring-2 focus:ring-green-600 outline-none"
+                  required
                 />
               </div>
 
@@ -86,8 +132,12 @@ export default function ContactUs() {
                 <label className="block text-gray-700 mb-1">Last name</label>
                 <input
                   type="text"
+                  name="last_name"
+                  value={form.last_name}
+                  onChange={handleChange}
                   placeholder="Last name"
                   className="w-full px-4 py-3 bg-gray-100 text-gray-900 rounded-md focus:ring-2 focus:ring-green-600 outline-none"
+                  required
                 />
               </div>
 
@@ -97,8 +147,12 @@ export default function ContactUs() {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
                   placeholder="Email"
                   className="w-full px-4 py-3 bg-gray-100 text-gray-900 rounded-md focus:ring-2 focus:ring-green-600 outline-none"
+                  required
                 />
               </div>
 
@@ -106,6 +160,9 @@ export default function ContactUs() {
                 <label className="block text-gray-700 mb-1">Phone</label>
                 <input
                   type="text"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
                   placeholder="Phone"
                   className="w-full px-4 py-3 bg-gray-100 text-gray-900 rounded-md focus:ring-2 focus:ring-green-600 outline-none"
                 />
@@ -117,10 +174,18 @@ export default function ContactUs() {
                 </label>
                 <textarea
                   rows="5"
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
                   placeholder="Message"
                   className="w-full px-4 py-3 bg-gray-100 text-gray-900 rounded-md focus:ring-2 focus:ring-green-600 outline-none"
+                  required
                 ></textarea>
               </div>
+
+              {success && (
+                <p className="text-green-600 font-medium">{success}</p>
+              )}
 
               <button
                 type="submit"
