@@ -12,6 +12,9 @@ export default function AdminDashboard() {
     posts: 0,
     library: 0,
     media: 0,
+    volunteers: 0,
+    projects: 0,
+
   });
 
   const getTotal = (res) => {
@@ -49,6 +52,9 @@ export default function AdminDashboard() {
       const postsRes = await api.get("/posts");
       const libraryRes = await api.get("/librarys");
       const mediaRes = await api.get("/documents");
+      const volunteersRes = await api.get("/volunteers");
+      const projectsRes = await api.get("/projects");
+
 
       setStats({
         total: all.length,
@@ -59,6 +65,8 @@ export default function AdminDashboard() {
         posts: getTotal(postsRes),
         library: getTotal(libraryRes),
         media: getTotal(mediaRes),
+        volunteers: getTotal(volunteersRes), // NEW
+        projects: getTotal(projectsRes),
       });
 
     } catch (error) {
@@ -74,7 +82,7 @@ export default function AdminDashboard() {
     <div>
       <h1 className="text-3xl font-bold text-green-700 mb-6">Admin Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
 
         <div className="bg-white shadow rounded-lg p-6 border-l-4 border-green-700">
           <p className="text-gray-500">Total People</p>
@@ -94,6 +102,11 @@ export default function AdminDashboard() {
         <div className="bg-white shadow rounded-lg p-6 border-l-4 border-red-600">
           <p className="text-gray-500">Staff</p>
           <h2 className="text-3xl font-bold">{stats.staff}</h2>
+        </div>
+
+        <div className="bg-white shadow rounded-lg p-6 border-l-4 border-gray-600">
+          <p className="text-gray-500">Total Volunteers</p>
+          <h2 className="text-3xl font-bold">{stats.volunteers}</h2>
         </div>
 
         {/* NEW CARDS */}
@@ -116,8 +129,15 @@ export default function AdminDashboard() {
           <p className="text-gray-500">Total Media Files</p>
           <h2 className="text-3xl font-bold">{stats.media}</h2>
         </div>
+
+        <div className="bg-white shadow rounded-lg p-6 border-l-4 border-cyan-600">
+          <p className="text-gray-500">Total Projects</p>
+          <h2 className="text-3xl font-bold">{stats.projects}</h2>
+        </div>
+
       </div>
-      <div className="mt-12">
+
+      <div>
         <PostLineChart />
       </div>
     </div>
