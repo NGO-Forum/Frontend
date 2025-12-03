@@ -111,7 +111,7 @@ export default function ImpactDetailModal({ open, impact, onClose, projects }) {
                 )}
 
                 <div className="text-lg md:text-xl mb-3 font-semibold text-green-700">
-                    Project Name:  
+                    Project Name:
                     <span className="text-gray-700 mt-1 leading-relaxed text-sm md:text-lg font-medium ml-2">
                         {projects.find(p => p.id === impact.project_id)?.name}
                     </span>
@@ -142,27 +142,43 @@ export default function ImpactDetailModal({ open, impact, onClose, projects }) {
                 </div>
 
                 {/* LOGO IMAGES AS INFINITE SLIDER */}
+                {/* LOGO IMAGES */}
                 {impact.logo_urls?.length > 0 && (
                     <div className="mb-4">
                         <h3 className="font-semibold text-green-700 text-lg">Finance By Donors:</h3>
 
-                        <div
-                            ref={sliderRef}
-                            className="overflow-hidden py-4 cursor-pointer"
-                            onMouseEnter={() => setPaused(true)}
-                            onMouseLeave={() => setPaused(false)}
-                        >
-                            <div className="flex whitespace-nowrap gap-6 w-max">
-                                {[...impact.logo_urls, ...impact.logo_urls].map((logo, index) => (
+                        {/* SIMPLE STATIC ROW if logos < 7 */}
+                        {impact.logo_urls.length < 5 && (
+                            <div className="flex gap-5 mt-3 flex-wrap">
+                                {impact.logo_urls.map((logo, index) => (
                                     <img
                                         key={index}
                                         src={logo}
-                                        className="h-16 md:h-20 w-auto object-contain rounded-lg bg-white p-2 border shadow shrink-0"
-                                        draggable="false"
+                                        className="h-16 md:h-20 w-auto object-contain rounded-lg bg-white p-2 border shadow"
                                     />
                                 ))}
                             </div>
-                        </div>
+                        )}
+
+                        {/* INFINITE SLIDER ONLY if logos ≥ 7 */}
+                        {impact.logo_urls.length >= 5 && (
+                            <div
+                                ref={sliderRef}
+                                className="overflow-hidden py-4 cursor-pointer"
+                                onMouseEnter={() => setPaused(true)}
+                                onMouseLeave={() => setPaused(false)}
+                            >
+                                <div className="flex whitespace-nowrap gap-6 w-max">
+                                    {[...impact.logo_urls, ...impact.logo_urls].map((logo, index) => (
+                                        <img
+                                            key={index}
+                                            src={logo}
+                                            className="h-16 md:h-20 w-auto object-contain rounded-lg bg-white p-2 border shadow shrink-0"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
