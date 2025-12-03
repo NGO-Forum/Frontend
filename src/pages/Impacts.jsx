@@ -4,12 +4,20 @@ import ImpactDetailModal from "../components/ImpactDetailModal";
 
 export default function Impact() {
   const [impacts, setImpacts] = useState([]);
+  const [projects, setProjects] = useState([]);
+
   const [selectedImpact, setSelectedImpact] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     api.get("/impacts").then((res) => {
       setImpacts(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    api.get("/projects").then((res) => {
+      setProjects(res.data);
     });
   }, []);
 
@@ -88,7 +96,7 @@ export default function Impact() {
               </h3>
 
               {/* program */}
-              <p className="text-gray-600 text-sm mt-3">
+              <div className="text-gray-600 text-sm mt-3">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {(Array.isArray(imp.program) ? imp.program : [imp.program])
                     .filter(Boolean)
@@ -100,7 +108,8 @@ export default function Impact() {
                         {p}
                       </span>
                     ))}
-                </div></p>
+                </div>
+              </div>
 
               {/* SUMMARY */}
               <p className="text-gray-600 text-sm mt-2 line-clamp-3">
@@ -127,6 +136,7 @@ export default function Impact() {
       <ImpactDetailModal
         open={showDetail}
         impact={selectedImpact}
+        projects={projects}
         onClose={() => setShowDetail(false)}
       />
 

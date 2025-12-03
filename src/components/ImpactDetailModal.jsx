@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function ImpactDetailModal({ open, impact, onClose }) {
+export default function ImpactDetailModal({ open, impact, onClose, projects }) {
     if (!open || !impact) return null;
 
     const [current, setCurrent] = useState(0);
@@ -79,7 +79,7 @@ export default function ImpactDetailModal({ open, impact, onClose }) {
 
                         {/* NAME OVERLAY ON IMAGE */}
                         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent px-4 py-3 rounded-b-lg">
-                            <h2 className="text-white text-lg md:text-xl font-bold drop-shadow">
+                            <h2 className="text-white text-sm md:text-xl font-bold drop-shadow">
                                 {impact.name}
                             </h2>
                         </div>
@@ -110,12 +110,12 @@ export default function ImpactDetailModal({ open, impact, onClose }) {
                     </div>
                 )}
 
-                <h2 className="text-lg md:text-xl mb-3 font-semibold text-green-700">
-                    Project Name: 
-                    <span className="text-gray-700 mt-1 leading-relaxed text-lg font-medium">
+                <div className="text-lg md:text-xl mb-3 font-semibold text-green-700">
+                    Project Name:  
+                    <span className="text-gray-700 mt-1 leading-relaxed text-sm md:text-lg font-medium ml-2">
                         {projects.find(p => p.id === impact.project_id)?.name}
                     </span>
-                </h2>
+                </div>
 
 
                 {/* PROGRAM BADGES */}

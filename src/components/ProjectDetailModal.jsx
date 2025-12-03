@@ -71,7 +71,7 @@ export default function ProjectDetailModal({ open, project, onClose }) {
 
                         {/* NAME OVERLAY ON IMAGE */}
                         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent px-4 py-3 rounded-b-lg">
-                            <h2 className="text-white text-lg md:text-xl font-bold drop-shadow">{project.name}</h2>
+                            <h2 className="text-white text-sm md:text-xl font-bold drop-shadow">{project.name}</h2>
                         </div>
 
                         {/* LEFT ARROW */}
