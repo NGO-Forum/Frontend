@@ -28,7 +28,7 @@ export default function PostLineChart() {
 
   return (
     <div className="bg-white rounded-lg shadow p-6 mt-10">
-      <h2 className="text-xl font-bold mb-4 text-green-700">Posts in Last 12 Months</h2>
+      <h2 className="text-xl font-bold mb-4 text-green-700">Posts in This Year</h2>
 
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
