@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../API/api";
 import Swal from "sweetalert2";
 
@@ -11,6 +11,8 @@ export default function DonateStep2() {
 
   const [transaction, setTransaction] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+  const [pollingInterval, setPollingInterval] = useState(null);
 
   const [form, setForm] = useState({
     full_name: "",
@@ -21,7 +23,9 @@ export default function DonateStep2() {
 
   if (!amount) navigate("/donate");
 
-  // STEP 1 — Generate KHQR (no saving to DB yet)
+  // ----------------------------
+  // 1️⃣ Generate QR Code
+  // ----------------------------
   const generateQR = async () => {
     if (!form.full_name || !form.email) {
       Swal.fire({
@@ -40,27 +44,21 @@ export default function DonateStep2() {
         full_name: form.full_name,
       });
 
-      const qrBase64 = res.data.qr;              // backend returns base64 SVG
+      const qrBase64 = res.data.qr;
       const tx = res.data.transaction;
-
       setTransaction(tx);
 
       const imgSrc = `data:image/svg+xml;base64,${qrBase64}`;
 
-      // 🔔 Show QR inside SweetAlert
       Swal.fire({
         icon: "info",
         title: "Scan to Pay",
         html: `
           <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-            <img 
-              src="${imgSrc}" 
-              alt="KHQR" 
-              style="width:240px;height:240px;border-radius:16px;border:1px solid #e5e7eb;padding:8px;"
-            />
+            <img src="${imgSrc}" style="width:240px;height:240px;border:1px solid #ccc;padding:8px;border-radius:10px;" />
             <p style="font-size:14px;color:#4b5563;">
-              Use any <b>KHQR-supported banking app</b> (e.g. ACLEDA ToanChet) to scan & pay.<br/>
-              After payment is completed, keep this window open while we verify your donation.
+              After payment, please wait while we verify it.
+              This window can remain open during payment.
             </p>
           </div>
         `,
@@ -69,32 +67,74 @@ export default function DonateStep2() {
         width: 350,
       });
 
-      // OPTIONAL: you could start polling backend here to verify payment
-      // (see section 3 below)
+      // AUTO CHECK payment every 3 seconds
+      const interval = setInterval(() => checkPaymentStatus(tx), 3000);
+
+      // STOP after 5 minutes
+      setTimeout(() => {
+        clearInterval(interval);
+
+        if (!isPaid) {
+          Swal.fire({
+            icon: "warning",
+            title: "Payment Not Detected",
+            html: `
+            <p style="font-size:14px;color:#444;">
+              We did not detect your payment within <b>5 minutes</b>.
+            </p>
+            <p style="margin-top:10px">
+              If you already paid, please tap 
+              <b>"I Have Paid — Save Donation"</b>.
+            </p>
+          `,
+            confirmButtonText: "OK",
+          });
+        }
+      }, 5 * 60 * 1000);
+
 
     } catch (err) {
       console.error(err);
       Swal.fire({
         icon: "error",
         title: "QR Generation Failed",
-        text: "We could not generate your QR Code. Please try again.",
+        text: "Please try again.",
       });
     }
 
     setLoading(false);
   };
 
-  // STEP 2 — Only after user paid → save donation
-  const completeDonation = async () => {
-    if (!transaction) {
-      Swal.fire({
-        icon: "warning",
-        title: "QR Not Generated",
-        text: "Please generate the QR Code first.",
-      });
-      return;
-    }
+  // ----------------------------
+  // 2️⃣ Auto-check payment status
+  // ----------------------------
+  const checkPaymentStatus = async (tx) => {
+    try {
+      const res = await api.get(`/khqr/status/${tx}`);
 
+      if (res.data.paid) {
+        clearInterval(pollingInterval);
+        setIsPaid(true);
+
+        Swal.fire({
+          icon: "success",
+          title: "Payment Confirmed 🎉",
+          text: "Thank you for your donation!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        saveDonation(); // auto save donation
+      }
+    } catch (err) {
+      console.warn("Status check failed:", err.message);
+    }
+  };
+
+  // ----------------------------
+  // 3️⃣ Manual Save (Fallback)
+  // ----------------------------
+  const saveDonation = async () => {
     try {
       await api.post("/donations", {
         ...form,
@@ -102,24 +142,30 @@ export default function DonateStep2() {
         transaction,
       });
 
-      Swal.fire({
-        icon: "success",
-        title: "Donation Complete 🎉",
-        text: "Thank you for your donation!",
-        timer: 2500,
-        showConfirmButton: false,
-      });
+      navigate("/donate");
 
-      navigate("/");
     } catch (err) {
-      console.error(err);
       Swal.fire({
         icon: "error",
         title: "Saving Failed",
-        text: "We could not save your donation.",
+        text: "Could not save donation.",
       });
     }
   };
+
+  // Manual button:
+  const manualSave = async () => {
+    Swal.fire({
+      icon: "info",
+      title: "Saving Donation...",
+      text: "Please wait...",
+      timer: 1000,
+      showConfirmButton: false,
+    });
+
+    await saveDonation();
+  };
+
   return (
     <div className="bg-gray-100">
 
@@ -189,7 +235,7 @@ export default function DonateStep2() {
 
             <p className="text-center text-lg lg:text-xl font-semibold mb-4">
               Donation Amount:{" "}
-              <span className="text-green-700 font-bold">${amount}.00</span>
+              <span className="text-green-700 font-bold">${Number(amount).toFixed(2)}</span>
             </p>
 
             {/* Form */}
@@ -251,7 +297,7 @@ export default function DonateStep2() {
               {/* Optional manual "I've paid" button (if you still want it) */}
               {transaction && (
                 <button
-                  onClick={completeDonation}
+                  onClick={manualSave}
                   className="border border-green-600 text-green-700 py-2 rounded-lg font-semibold hover:bg-green-50"
                 >
                   ✔ I Have Paid — Save My Donation

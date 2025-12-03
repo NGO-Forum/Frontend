@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     posts: 0,
     library: 0,
     media: 0,
-    volunteers: 0,
+    views: 0, 
     projects: 0,
 
   });
@@ -52,7 +52,7 @@ export default function AdminDashboard() {
       const postsRes = await api.get("/posts");
       const libraryRes = await api.get("/librarys");
       const mediaRes = await api.get("/documents");
-      const volunteersRes = await api.get("/volunteers");
+      const viewsRes = await api.get("/total-views");
       const projectsRes = await api.get("/projects");
 
 
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
         posts: getTotal(postsRes),
         library: getTotal(libraryRes),
         media: getTotal(mediaRes),
-        volunteers: getTotal(volunteersRes), // NEW
+        views: viewsRes.data.total_views, // NEW
         projects: getTotal(projectsRes),
       });
 
@@ -105,8 +105,8 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white shadow rounded-lg p-6 border-l-4 border-gray-600">
-          <p className="text-gray-500">Total Volunteers</p>
-          <h2 className="text-3xl font-bold">{stats.volunteers}</h2>
+          <p className="text-gray-500">Total Website Views</p>
+          <h2 className="text-3xl font-bold">{stats.views}</h2>
         </div>
 
         {/* NEW CARDS */}

@@ -1,11 +1,26 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { api } from "../../API/api";
 
 export default function AdminLayout() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/logout"); // optional if your backend has logout route
+    } catch (e) {
+      console.log("Logout error:", e);
+    }
+
+    localStorage.removeItem("token"); // REMOVE TOKEN
+    navigate("/admin/login");         // REDIRECT
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-white ">
 
       {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r border-gray-200 p-6 hidden md:block">
+      <aside className="w-64border-r border-gray-200 p-6 hidden md:block">
         <div className="mb-8 flex justify-center">
           <NavLink
             to="/admin"
@@ -20,7 +35,7 @@ export default function AdminLayout() {
         </div>
 
         {/* NAV MENU */}
-        <nav className="space-y-2">
+        <nav className="space-y-2 h-[70vh] overflow-auto">
           <NavLink
             to="/admin"
             end
@@ -153,11 +168,31 @@ export default function AdminLayout() {
           >
             Impacts
           </NavLink>
+
+          <NavLink
+            to="/admin/donations"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${isActive
+                ? "bg-green-600 text-white"
+                : "text-gray-700 hover:bg-gray-100 hover:text-green-700"
+              }`
+            }
+          >
+            Donations
+          </NavLink>
         </nav>
+
+        {/* LOGOUT */}
+        <button
+          onClick={handleLogout}
+          className="mt-5 px-4 text-center hover:text-white py-2 rounded-lg font-semibold hover:bg-red-600"
+        >
+          Log out
+        </button>
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-4 md:px-6">
+      <main className="bg-gray-100 flex-1 p-4 md:px-6">
         <Outlet />
       </main>
 

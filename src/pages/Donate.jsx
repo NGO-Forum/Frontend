@@ -10,19 +10,40 @@ export default function DonateStep1() {
 
   // Auto-add $ when user types
   const handleCustomAmount = (e) => {
-    const raw = e.target.value.replace(/[^0-9]/g, ""); // only numbers
+    let value = e.target.value;
 
-    if (raw === "") {
-      setCustomAmount(""); // empty → no $
-    } else {
-      setCustomAmount(`$${raw}`);
+    // Remove everything except numbers and dot
+    value = value.replace(/[^0-9.]/g, "");
+
+    // Prevent multiple dots
+    const parts = value.split(".");
+    if (parts.length > 2) {
+      value = parts[0] + "." + parts[1];
     }
 
-    setAmount(null);
+    // Limit to 2 decimals max
+    if (parts[1]?.length > 2) {
+      value = parts[0] + "." + parts[1].slice(0, 2);
+    }
+
+    // Prevent starting with dot → convert ".5" → "0.5"
+    if (value.startsWith(".")) {
+      value = "0" + value;
+    }
+
+    setAmount(null); // remove preset selection
+
+    // Show formatted value
+    if (value === "") {
+      setCustomAmount("");
+    } else {
+      setCustomAmount(`$${value}`);
+    }
   };
 
+
   const handleNext = () => {
-    const finalAmount = amount || Number(customAmount);
+    const finalAmount = amount ? amount : Number(customAmount.replace("$", ""));
 
     if (!finalAmount || finalAmount <= 0) {
       alert("Please enter a valid donation amount.");

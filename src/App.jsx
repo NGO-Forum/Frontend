@@ -1,4 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { api } from "./API/api";
+
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -52,9 +56,18 @@ import ProjectAdmin from "./admins/page/ProjectAdmin";
 import MemberAdmin from "./admins/page/MemberAdmin";
 import Network from "./admins/page/NetworksAdmin";
 import Impact from "./admins/page/ImpactsAdmin";
+import DonationTable from "./admins/page/DonationTable";
 
 export default function App() {
   const location = useLocation();
+
+  // Track website views for PUBLIC pages
+  useEffect(() => {
+    if (!location.pathname.startsWith("/admin")) {
+      api.post("/track-view", { page: location.pathname });
+    }
+  }, [location.pathname]);
+
   // If URL starts with /admin → hide navbar & footer
   const isAdminRoute = location.pathname.startsWith("/admin");
 
@@ -109,6 +122,7 @@ export default function App() {
           <Route path="member" element={<MemberAdmin />} />
           <Route path="network" element={<Network />} />
           <Route path="impact" element={<Impact />} />
+          <Route path="donations" element={<DonationTable />} />
         </Route>
       </Routes>
 
