@@ -138,7 +138,6 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
               className="border px-3 py-2 rounded-lg"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              required
             >
               <option value="">Select Department</option>
               <option value="PALI">PALI</option>
