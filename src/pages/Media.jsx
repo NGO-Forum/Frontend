@@ -213,7 +213,7 @@ export default function MediaContact() {
               )}
 
               {/* TITLE */}
-              <p className="mt-2 text-center font-semibold text-gray-800 leading-snug line-clamp-2 p-2">
+              <p className="mt-2 text-center font-semibold text-gray-800 leading-snug line-clamp-2 px-4">
                 {doc.title}
               </p>
 
