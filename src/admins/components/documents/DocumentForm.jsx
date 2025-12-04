@@ -143,8 +143,7 @@ export default function DocumentForm({ editDoc, setEditDoc, onSuccess }) {
         {/* KH File */}
         <div className="space-y-2">
           <label className="block text-xs font-medium text-slate-500">
-            Khmer File (PDF/DOC/DOCX)
-            {!isEditing && <span className="text-red-500">*</span>}
+            Khmer File
           </label>
           <input
             type="file"
@@ -166,7 +165,7 @@ export default function DocumentForm({ editDoc, setEditDoc, onSuccess }) {
         {/* EN File */}
         <div className="space-y-2">
           <label className="block text-xs font-medium text-slate-500">
-            English File (optional)
+            English File
           </label>
           <input
             type="file"
