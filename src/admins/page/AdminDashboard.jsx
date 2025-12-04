@@ -11,11 +11,12 @@ export default function AdminDashboard() {
     members: 0,
     posts: 0,
     library: 0,
-    media: 0,
-    views: 0, 
+    media: 0, 
     projects: 0,
 
   });
+
+  const [uniqueVisitors, setUniqueVisitors] = useState(0);
 
   const getTotal = (res) => {
     const d = res.data;
@@ -52,7 +53,7 @@ export default function AdminDashboard() {
       const postsRes = await api.get("/posts");
       const libraryRes = await api.get("/librarys");
       const mediaRes = await api.get("/documents");
-      const viewsRes = await api.get("/total-views");
+      const visitorsRes = await api.get("/unique-visitors");
       const projectsRes = await api.get("/projects");
 
 
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
         posts: getTotal(postsRes),
         library: getTotal(libraryRes),
         media: getTotal(mediaRes),
-        views: viewsRes.data.total_views, // NEW
+        uniqueVisitors: visitorsRes.data.unique_visitors, // NEW
         projects: getTotal(projectsRes),
       });
 
@@ -106,7 +107,7 @@ export default function AdminDashboard() {
 
         <div className="bg-white shadow rounded-lg p-6 border-l-4 border-gray-600">
           <p className="text-gray-500">Total Website Views</p>
-          <h2 className="text-3xl font-bold">{stats.views}</h2>
+          <h2 className="text-3xl font-bold">{stats.uniqueVisitors}</h2>
         </div>
 
         {/* NEW CARDS */}

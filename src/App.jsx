@@ -61,12 +61,12 @@ import DonationTable from "./admins/page/DonationTable";
 export default function App() {
   const location = useLocation();
 
-  // Track website views for PUBLIC pages
+  // AUTO TRACK VIEW ON EVERY PAGE CHANGE
   useEffect(() => {
-    if (!location.pathname.startsWith("/admin")) {
-      api.post("/track-view", { page: location.pathname });
-    }
-  }, [location.pathname]);
+    api.post("/track-visitor")
+      .then(res => console.log("Visitor tracked:", res.data))
+      .catch(err => console.error("Track error:", err));
+  }, []);
 
   // If URL starts with /admin → hide navbar & footer
   const isAdminRoute = location.pathname.startsWith("/admin");
