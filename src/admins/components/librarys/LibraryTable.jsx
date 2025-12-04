@@ -60,18 +60,20 @@ export default function LibraryTable({ librarys, setEditLibrary, onDelete }) {
               </td>
 
               <td className="px-4 py-1 space-x-2">
-                <a
-                  href={`${APP_URL}/storage/${library.file_kh}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100 hover:bg-emerald-100"
-                >
-                  KH
-                </a>
+                {library.file_kh && (
+                  <a
+                    href={library.file_kh}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100 hover:bg-emerald-100"
+                  >
+                    KH
+                  </a>
+                )}
 
                 {library.file_en && (
                   <a
-                    href={`${APP_URL}/storage/${library.file_en}`}
+                    href={library.file_en}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-100"
