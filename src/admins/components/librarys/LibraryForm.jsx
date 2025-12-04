@@ -41,8 +41,19 @@ export default function LiraryForm({ editLibrary, setEditLibrary, onSuccess }) {
     form.append("type", data.type);
     form.append("year", data.year);
 
-    if (data.file_kh?.[0]) form.append("file_kh", data.file_kh[0]);
-    if (data.file_en?.[0]) form.append("file_en", data.file_en[0]);
+    // Khmer file
+    if (data.file_kh && data.file_kh[0]) {
+      form.append("file_kh", data.file_kh[0]);
+    } else {
+      form.delete("file_kh");
+    }
+
+    // English file
+    if (data.file_en && data.file_en[0]) {
+      form.append("file_en", data.file_en[0]);
+    } else {
+      form.delete("file_en");
+    }
 
     try {
       if (editLibrary) {
@@ -142,8 +153,7 @@ export default function LiraryForm({ editLibrary, setEditLibrary, onSuccess }) {
         {/* KH File */}
         <div className="space-y-2">
           <label className="block text-xs font-medium text-slate-500">
-            Khmer File (PDF/DOC/DOCX)
-            {!isEditing && <span className="text-red-500">*</span>}
+            Khmer File
           </label>
           <input
             type="file"
@@ -165,7 +175,7 @@ export default function LiraryForm({ editLibrary, setEditLibrary, onSuccess }) {
         {/* EN File */}
         <div className="space-y-2">
           <label className="block text-xs font-medium text-slate-500">
-            English File (optional)
+            English File
           </label>
           <input
             type="file"

@@ -42,8 +42,19 @@ export default function DocumentForm({ editDoc, setEditDoc, onSuccess }) {
     form.append("type", data.type);
     form.append("year", data.year);
 
-    if (data.file_kh?.[0]) form.append("file_kh", data.file_kh[0]);
-    if (data.file_en?.[0]) form.append("file_en", data.file_en[0]);
+    // Khmer file
+    if (data.file_kh && data.file_kh[0]) {
+      form.append("file_kh", data.file_kh[0]);
+    } else {
+      form.delete("file_kh");
+    }
+
+    // English file
+    if (data.file_en && data.file_en[0]) {
+      form.append("file_en", data.file_en[0]);
+    } else {
+      form.delete("file_en");
+    }
 
     try {
       if (editDoc) {
