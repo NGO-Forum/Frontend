@@ -36,8 +36,7 @@ export default function PostCard({ post }) {
     <>
       {/* Card */}
       <article
-        onClick={() => setOpen(true)}
-        className="cursor-pointer bg-white rounded-3xl shadow-md hover:shadow-xl transition flex flex-col overflow-hidden w-full"
+        className=" bg-white rounded-3xl shadow-md hover:shadow-xl transition flex flex-col overflow-hidden w-full"
       >
         {/* Image */}
         <div className="h-56 w-full overflow-hidden">
@@ -64,8 +63,10 @@ export default function PostCard({ post }) {
             {post.description}
           </p>
 
-          <div className="mt-auto pt-4">
-            <span className="text-sm lg:text-lg font-semibold text-green-600 flex items-center gap-1 hover:text-green-900">
+          <div className="mt-auto pt-4 "
+            onClick={() => setOpen(true)}
+            >
+            <span className="cursor-pointer text-sm lg:text-lg font-semibold text-green-600 flex items-center gap-1 hover:text-green-900">
               Read More ↗
             </span>
           </div>
