@@ -45,7 +45,7 @@ export default function LibraryTable({ librarys, setEditLibrary, onDelete }) {
         <tbody className="divide-y divide-slate-200">
           {librarys.map((library) => (
             <tr key={library.id} className="hover:bg-slate-50">
-              <td className="px-4 py-1">{library.title}</td>
+              <td className="px-4 py-1 whitespace-nowrap max-w-[400px] truncate">{library.title}</td>
 
               <td className="px-4 py-1">
                 <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border">

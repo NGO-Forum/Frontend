@@ -133,6 +133,13 @@ export default function Careers() {
               </p>
             )}
 
+            <div className="mt-2 text-gray-700">
+              <strong>Email:</strong>{" "}
+              <a href="mailto:job@ngoforum.org.kh" className="text-blue-600 underline">
+                job@ngoforum.org.kh
+              </a>
+            </div>
+
             {/* DESCRIPTION */}
             <div className="mt-6">
               <h3 className="text-lg lg:text-2xl font-bold text-green-700 mb-3">Job Description</h3>
@@ -155,6 +162,31 @@ export default function Careers() {
                 </ul>
               </div>
             )}
+
+            <div className="mt-6">
+              <a
+                href={`http://44.205.95.55/storage/${job.attachment}`}
+                target="_blank"
+                className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                Document TOR
+              </a>
+
+            </div>
 
             {/* Apply button */}
             <div className="mt-8">

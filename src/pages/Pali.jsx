@@ -36,7 +36,7 @@ export default function PaliPage() {
 
         {/* LEFT TITLE SECTION */}
         <div>
-          <h1 className="text-2xl lg:text-5xl font-bold mb-4">PILI</h1>
+          <h1 className="text-2xl lg:text-5xl font-bold mb-4">PALI</h1>
           <h2 className="text-xl lg:text-2xl font-semibold">
             (Policies and Legal Influence)
           </h2>

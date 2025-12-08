@@ -9,6 +9,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
   const [closingDate, setClosingDate] = useState(editingJob?.closing_date || "");
   const [department, setDepartment] = useState(editingJob?.department || "");
   const [image, setImage] = useState(null);
+  const [attachment, setAttachment] = useState(null);
 
   const [status, setStatus] = useState({
     open: false,
@@ -27,6 +28,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
     form.append("department", department);
 
     if (image) form.append("image", image);
+    if (attachment) form.append("attachment", attachment);
 
     try {
       if (editingJob) {
@@ -154,6 +156,31 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
             className="w-full border rounded-lg px-3 py-2 mt-1 h-40 focus:ring-2 focus:ring-green-500"
             value={requirements}
             onChange={(e) => setRequirements(e.target.value)}
+          />
+        </div>
+
+        {/* Attachment Upload */}
+        <div className="md:col-span-2">
+          <label className="font-semibold text-gray-700">
+            File Document
+          </label>
+
+          {/* Show existing file in edit mode */}
+          {editingJob?.attachment && (
+            <a
+              href={`http://44.205.95.55/storage/${editingJob.attachment}`}
+              target="_blank"
+              className="block text-blue-600 underline text-sm mb-2"
+            >
+              View Existing
+            </a>
+          )}
+
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => setAttachment(e.target.files[0])}
+            className="mt-2 border rounded-lg px-3 py-2 w-full bg-gray-50"
           />
         </div>
 

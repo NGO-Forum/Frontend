@@ -56,13 +56,18 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
   // Select new images
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
-    setNewImages(files);
 
-    setPreviews([
+    const updatedNewImages = [...newImages, ...files];
+    setNewImages(updatedNewImages);
+
+    const updatedPreview = [
       ...oldImages.map((img) => `http://44.205.95.55/storage/${img}`),
-      ...files.map((file) => URL.createObjectURL(file)),
-    ]);
+      ...updatedNewImages.map((img) => URL.createObjectURL(img))
+    ];
+
+    setPreviews(updatedPreview);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,6 +83,9 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
     if (file) {
       form.append("file", file);
     }
+
+    // Send list of old images to keep
+    form.append("keep_old_images", JSON.stringify(oldImages));
 
     // ONLY send new images
     newImages.forEach((img) => {
@@ -109,6 +117,26 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
         message: "Failed to save post.",
       });
     }
+  };
+
+  const removeImage = (index) => {
+    // If image is from old images (editing existing post)
+    if (index < oldImages.length) {
+      const updatedOld = [...oldImages];
+      updatedOld.splice(index, 1);
+      setOldImages(updatedOld);
+    } else {
+      // It's new images (after old images in preview)
+      const newIndex = index - oldImages.length;
+      const updatedNew = [...newImages];
+      updatedNew.splice(newIndex, 1);
+      setNewImages(updatedNew);
+    }
+
+    // Remove from preview list
+    const updatedPreview = [...previews];
+    updatedPreview.splice(index, 1);
+    setPreviews(updatedPreview);
   };
 
 
@@ -181,25 +209,48 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
 
           {/* Images */}
           <div className="flex flex-col">
-            <label className="font-semibold mb-1">Images</label>
+            <label className="font-semibold mb-2">Images</label>
+
+            {/* Hidden file input */}
             <input
               type="file"
+              id="imagePicker"
               multiple
-              className="border p-2 rounded-lg"
+              className="hidden"
               onChange={handleImageSelect}
             />
+
+            {/* Add Image Button */}
+            <button
+              type="button"
+              onClick={() => document.getElementById("imagePicker").click()}
+              className="bg-green-600 text-white px-4 py-1 rounded-lg w-fit mb-3"
+            >
+              + Add
+            </button>
 
             {previews.length > 0 && (
               <div className="grid grid-cols-3 gap-2 mt-3">
                 {previews.map((src, idx) => (
-                  <img
-                    key={idx}
-                    src={src}
-                    className="w-16 h-16 object-cover rounded border"
-                  />
+                  <div key={idx} className="relative group">
+                    <img
+                      src={src}
+                      className="w-20 h-20 object-cover rounded border"
+                    />
+
+                    {/* Remove Button */}
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1 rounded opacity-0 group-hover:opacity-100 transition"
+                    >
+                      X
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
+
           </div>
 
         </div>
