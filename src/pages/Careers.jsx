@@ -163,30 +163,32 @@ export default function Careers() {
               </div>
             )}
 
-            <div className="mt-6">
-              <a
-                href={`http://44.205.95.55/storage/${job.attachment}`}
-                target="_blank"
-                className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+            {selectedJob.attachment && (
+              <div className="mt-6 w-[180px]">
+                <a
+                  href={`http://44.205.95.55/storage/${selectedJob.attachment}`}
+                  target="_blank"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Document TOR
-              </a>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Document TOR
+                </a>
+              </div>
+            )}
 
-            </div>
 
             {/* Apply button */}
             <div className="mt-8">

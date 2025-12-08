@@ -24,7 +24,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
     form.append("title", title);
     form.append("description", description);
     form.append("requirements", requirements);
-    form.append("closing_date", closingDate);
+    form.append("closing_date", closingDate || "");
     form.append("department", department);
 
     if (image) form.append("image", image);
@@ -32,6 +32,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
 
     try {
       if (editingJob) {
+        // Important: must use POST + _method=PUT
         form.append("_method", "PUT");
 
         await api.post(`/jobs/${editingJob.id}`, form, {
@@ -43,7 +44,6 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
           type: "success",
           message: "Job updated successfully!",
         });
-
       } else {
         await api.post("/jobs", form, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -55,9 +55,9 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
           message: "Job created successfully!",
         });
       }
-
     } catch (error) {
       console.error("Submit failed:", error);
+
       setStatus({
         open: true,
         type: "error",
@@ -65,6 +65,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
       });
     }
   };
+
 
   return (
     <>
@@ -87,6 +88,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
 
         {/* INPUT GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           {/* Job Title */}
           <div>
             <label className="font-semibold text-gray-700">Job Title</label>
@@ -126,8 +128,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
             </select>
           </div>
 
-
-          {/* Image Upload */}
+          {/* Job Image */}
           <div className="md:col-span-2">
             <label className="font-semibold text-gray-700">Job Image / Banner</label>
             <input
@@ -159,13 +160,10 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
           />
         </div>
 
-        {/* Attachment Upload */}
+        {/* File Attachment */}
         <div className="md:col-span-2">
-          <label className="font-semibold text-gray-700">
-            File Document
-          </label>
+          <label className="font-semibold text-gray-700">File Document</label>
 
-          {/* Show existing file in edit mode */}
           {editingJob?.attachment && (
             <a
               href={`http://44.205.95.55/storage/${editingJob.attachment}`}
@@ -184,7 +182,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
           />
         </div>
 
-        {/* BUTTONS */}
+        {/* Buttons */}
         <div className="flex justify-end gap-3 pt-4 border-t">
           <button
             type="button"
@@ -210,7 +208,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
         message={status.message}
         onClose={() => {
           setStatus({ ...status, open: false });
-          onSaved(); // close modal & refresh list AFTER clicking OK
+          onSaved();
         }}
       />
     </>
