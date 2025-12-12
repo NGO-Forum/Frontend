@@ -38,12 +38,12 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
       setOldImages(editingPost.images || []);
       setPreviews(
         editingPost.images?.map(
-          (img) => `http://44.205.95.55/storage/${img}`
+          (img) => `https://api.ngoforum.site/storage/${img}`
         ) || []
       );
 
       if (editingPost.file) {
-        setOldFile(`http://44.205.95.55/storage/${editingPost.file}`);
+        setOldFile(`https://api.ngoforum.site/storage/${editingPost.file}`);
       }
     }
   }, [editingPost]);
