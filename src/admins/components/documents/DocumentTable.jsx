@@ -4,7 +4,7 @@ import { api } from "../../../API/api";
 import MenuButton from "../MenuButton";
 import DeleteConfirmModal from "../DeleteConfirmModal";
 
-const APP_URL = import.meta.env.VITE_APP_URL || "http://44.205.95.55";
+const APP_URL = import.meta.env.VITE_APP_URL || "https://api.ngoforum.site";
 
 export default function DocumentTable({ documents, setEditDoc, onDelete }) {
   const [showDelete, setShowDelete] = useState(false);

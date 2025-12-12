@@ -16,7 +16,7 @@ export default function MediaContact() {
   const [lastPage, setLastPage] = useState(1);
 
   const imgUrl = (path) =>
-    path ? `http://44.205.95.55/storage/${path}` : "/images/no-image.png";
+    path ? `https://api.ngoforum.site/storage/${path}` : "/images/no-image.png";
 
   // -------------------------------------------------------
   // LOAD CONTACT PEOPLE
@@ -200,12 +200,12 @@ export default function MediaContact() {
               {/* THUMBNAIL */}
               {doc.file_kh ? (
                 <PDFThumbnail
-                  fileUrl={`http://44.205.95.55/storage/${doc.file_kh}`}
+                  fileUrl={`https://api.ngoforum.site/storage/${doc.file_kh}`}
                   className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
                 />
               ) : doc.file_en ? (
                 <PDFThumbnail
-                  fileUrl={`http://44.205.95.55/storage/${doc.file_en}`}
+                  fileUrl={`https://api.ngoforum.site/storage/${doc.file_en}`}
                   className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
                 />
               ) : (

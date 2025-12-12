@@ -96,7 +96,7 @@ export default function JobAdmin() {
               <td className="px-4 py-2">
                 {j.image ? (
                   <img
-                    src={`http://44.205.95.55/storage/${j.image}`}
+                    src={`https://api.ngoforum.site/storage/${j.image}`}
                     alt="Job"
                     className="w-8 h-8 object-cover rounded-full"
                   />

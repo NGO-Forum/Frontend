@@ -19,7 +19,7 @@ export default function PeopleTable({ people, loadPeople, setEditing }) {
   };
 
   const imgUrl = (path) =>
-    path ? `http://44.205.95.55/storage/${path}` : "/images/no-image.png";
+    path ? `https://api.ngoforum.site/storage/${path}` : "/images/no-image.png";
 
   return (
     <div className="rounded-xl shadow overflow-hidden border border-gray-200">

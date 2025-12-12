@@ -53,7 +53,7 @@ export default function PostAdmin() {
   };
 
   const imgUrl = (path) =>
-    path ? `http://44.205.95.55/storage/${path}` : "/images/no-image.png";
+    path ? `https://api.ngoforum.site/storage/${path}` : "/images/no-image.png";
 
   return (
     <div>

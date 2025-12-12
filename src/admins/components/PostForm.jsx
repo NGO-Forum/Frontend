@@ -61,7 +61,7 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
     setNewImages(updatedNewImages);
 
     const updatedPreview = [
-      ...oldImages.map((img) => `http://44.205.95.55/storage/${img}`),
+      ...oldImages.map((img) => `https://api.ngoforum.site/storage/${img}`),
       ...updatedNewImages.map((img) => URL.createObjectURL(img))
     ];
 
