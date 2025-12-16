@@ -112,7 +112,7 @@ export default function CommentFormCard({ onSuccess }) {
           Gender
         </label>
 
-        <div className="flex gap-6 text-sm">
+        <div className="flex flex-col md:flex-row gap-6 text-sm">
           {["male", "female", "other"].map((g) => (
             <label key={g} className="flex items-center gap-2 cursor-pointer">
               <input
