@@ -222,6 +222,16 @@ export default function Footer() {
               </li>
 
               <li>
+                <NavLink to="/comments"
+                  className={({ isActive }) =>
+                    isActive ? "underline font-semibold text-yellow-300" : "hover:underline"
+                  }
+                >
+                  Feedback
+                </NavLink>
+              </li>
+
+              <li>
                 <NavLink to="/careers"
                   className={({ isActive }) =>
                     isActive ? "underline font-semibold text-yellow-300" : "hover:underline"

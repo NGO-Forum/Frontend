@@ -159,6 +159,14 @@ export default function Navbar() {
       image: "/images/GetInvolved/voluteer.png",
     },
     {
+      name: "Comments & Feedback",
+      path: "/comments",
+      title: "Comments",
+      text: "Share your thoughts, experiences, and feedback with NGOF. Your input helps us improve our programs, strengthen our impact, and better serve communities in need.",
+      image: "/images/GetInvolved/comment.jpg",
+    },
+
+    {
       name: "Careers",
       path: "/careers",
       title: "Careers",

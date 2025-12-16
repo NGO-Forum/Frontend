@@ -180,6 +180,19 @@ export default function AdminLayout() {
           >
             Donations
           </NavLink>
+
+          <NavLink
+            to="/admin/feedback"
+            className={({ isActive }) =>
+              `block px-3 py-2 rounded-lg transition ${isActive
+                ? "bg-green-600 text-white"
+                : "text-gray-700 hover:bg-gray-100 hover:text-green-700"
+              }`
+            }
+          >
+            Comments
+          </NavLink>
+          
         </nav>
 
         {/* LOGOUT */}

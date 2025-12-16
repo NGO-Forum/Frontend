@@ -30,7 +30,7 @@ import Library from "./pages/Library";
 import Membership from "./pages/Membership";
 import Volunteer from "./pages/Volunteer";
 import Careers from "./pages/Careers";
-
+import Comments from "./pages/Comments";
 
 // Our Projects
 import Project from "./pages/Project";
@@ -57,6 +57,7 @@ import MemberAdmin from "./admins/page/MemberAdmin";
 import Network from "./admins/page/NetworksAdmin";
 import Impact from "./admins/page/ImpactsAdmin";
 import DonationTable from "./admins/page/DonationTable";
+import CommentsAdmin from "./admins/page/Feedback";
 
 export default function App() {
   const location = useLocation();
@@ -99,6 +100,7 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/donate/info" element={<DonateInfo />} />
+        <Route path="/comments" element={<Comments />} />
 
         {/* ADMIN ROUTES (NO NAVBAR/FOOTER) */}
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -123,6 +125,7 @@ export default function App() {
           <Route path="network" element={<Network />} />
           <Route path="impact" element={<Impact />} />
           <Route path="donations" element={<DonationTable />} />
+          <Route path="feedback" element={<CommentsAdmin />} />
         </Route>
       </Routes>
 
