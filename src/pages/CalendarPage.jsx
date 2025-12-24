@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CalendarDays,
+  Clock,
+  MapPin,
+  User,
+  FileText,
+  Image as ImageIcon,
+  UserPlus,
+  Phone,
+  Mail,
+  X,
+} from "lucide-react";
 
+/* ================= HELPERS ================= */
+const normalize = d =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+const overlaps = (a, b) =>
+  new Date(a.start_date) <= new Date(b.end_date) &&
+  new Date(b.start_date) <= new Date(a.end_date);
+
+/* ================= PAGE ================= */
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  /* ================= SCREEN SIZE ================= */
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  /* ================= FETCH EVENTS ================= */
   useEffect(() => {
     fetch(
       `https://membership.ngoforum.site/api/calendar?month=${month + 1}&year=${year}`
@@ -27,8 +41,8 @@ export default function CalendarPage() {
   }, [month, year]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="bg-white rounded-xl shadow overflow-hidden max-w-full">
+    <div className="bg-gray-100 p-3 sm:p-4">
+      <div className="bg-white rounded-xl shadow overflow-hidden">
 
         {/* HEADER */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
@@ -36,7 +50,7 @@ export default function CalendarPage() {
             <ChevronLeft />
           </button>
 
-          <h2 className="font-bold text-xl text-green-600">
+          <h2 className="font-bold text-lg sm:text-2xl text-green-700">
             {currentDate.toLocaleString("default", {
               month: "long",
               year: "numeric",
@@ -48,120 +62,289 @@ export default function CalendarPage() {
           </button>
         </div>
 
-        {/* MOBILE LIST VIEW */}
-        {isMobile ? (
-          <div className="p-4 space-y-3">
-            {events.length === 0 && (
-              <p className="text-gray-500 text-sm">No events</p>
-            )}
-
-            {events.map(event => (
-              <div
-                key={event.id}
-                className="border rounded-lg p-3"
-              >
-                <div className="font-semibold">{event.title}</div>
-                <div className="text-sm text-gray-600">
-                  {event.start_date} – {event.end_date}
-                </div>
-                {event.location && (
-                  <div className="text-xs text-gray-500">
-                    📍 {event.location}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          /* DESKTOP MONTH GRID */
-          <MonthGrid currentDate={currentDate} events={events} />
-        )}
+        <MonthGrid
+          currentDate={currentDate}
+          events={events}
+          onEventClick={setSelectedEvent}
+        />
       </div>
+
+      {selectedEvent && (
+        <EventDetailModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
     </div>
   );
 }
 
 /* ================= MONTH GRID ================= */
-function MonthGrid({ currentDate, events }) {
+function MonthGrid({ currentDate, events, onEventClick }) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
   const startOfMonth = new Date(year, month, 1);
   const gridStart = new Date(startOfMonth);
-  gridStart.setDate(startOfMonth.getDate() - startOfMonth.getDay());
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay());
 
-  const today = new Date();
-
-  /* Always build 42 cells */
   const days = Array.from({ length: 35 }, (_, i) => {
     const d = new Date(gridStart);
     d.setDate(gridStart.getDate() + i);
     return d;
   });
 
-  const getEventsForDate = date =>
-    events.filter(event => {
-      const start = new Date(event.start_date);
-      const end = new Date(event.end_date);
-      return date >= start && date <= end;
-    });
+  const weeks = [];
+  for (let i = 0; i < 5; i++) {
+    weeks.push(days.slice(i * 7, i * 7 + 7));
+  }
 
   return (
-    <>
-      {/* WEEK HEADER */}
-      <div className="grid grid-cols-7 bg-green-600 text-white text-center font-semibold">
-        {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
-          <div key={d} className="py-3">{d}</div>
+    <div className="overflow-x-auto">
+      <div className="min-w-[700px]">
+        <div className="grid grid-cols-7 bg-green-600 text-white text-center font-semibold">
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
+            <div key={d} className="py-3">{d}</div>
+          ))}
+        </div>
+
+        {weeks.map((week, i) => (
+          <WeekRow
+            key={i}
+            week={week}
+            month={month}
+            events={events}
+            onEventClick={onEventClick}
+          />
         ))}
       </div>
+    </div>
+  );
+}
 
-      {/* CALENDAR GRID */}
-      <div className="grid grid-cols-7 grid-rows-5">
-        {days.map((date, i) => {
-          const isCurrentMonth = date.getMonth() === month;
+/* ================= WEEK ROW ================= */
+function WeekRow({ week, month, events, onEventClick }) {
+  const weekEvents = events.filter(e => {
+    const s = normalize(new Date(e.start_date));
+    const en = normalize(new Date(e.end_date));
+    return en >= week[0] && s <= week[6];
+  });
+
+  const lanes = [];
+  weekEvents.forEach(event => {
+    let placed = false;
+    for (const lane of lanes) {
+      if (!lane.some(e => overlaps(e, event))) {
+        lane.push(event);
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) lanes.push([event]);
+  });
+
+  return (
+    <div className="border-b relative">
+      <div className="grid grid-cols-7 h-24 md:h-36">
+        {week.map((day, i) => {
           const isToday =
-            date.toDateString() === today.toDateString();
-
-          const dayEvents = getEventsForDate(date);
+            day.toDateString() === new Date().toDateString();
 
           return (
             <div
               key={i}
-              className={`border p-2 h-32 relative
-                ${isCurrentMonth ? "bg-white" : "bg-gray-50 text-gray-400"}
-              `}
+              className={`border-r p-2 text-sm relative
+              ${day.getMonth() !== month ? "bg-gray-50 text-gray-400" : ""}
+              ${isToday ? "bg-blue-50" : ""}
+            `}
             >
-              {/* DAY NUMBER */}
-              <span className="text-sm font-semibold">
-                {isToday ? (
-                  <span className="bg-blue-600 text-white rounded-full px-2 py-1 text-xs">
-                    {date.getDate()}
-                  </span>
-                ) : (
-                  date.getDate()
-                )}
+              <span
+                className={`inline-flex items-center justify-center
+                w-7 h-7 text-sm font-semibold
+                ${isToday ? "bg-blue-600 text-white rounded-full ring-2 ring-gray-300" : ""}
+              `}
+              >
+                {day.getDate()}
               </span>
-
-              {/* EVENTS */}
-              <div className="mt-2 space-y-1">
-                {dayEvents.slice(0, 2).map(event => (
-                  <div
-                    key={event.id}
-                    className="text-xs bg-green-600 text-white rounded px-1 truncate"
-                  >
-                    {event.title}
-                  </div>
-                ))}
-                {dayEvents.length > 2 && (
-                  <div className="text-xs text-gray-500">
-                    +{dayEvents.length - 2} more
-                  </div>
-                )}
-              </div>
             </div>
           );
         })}
+
       </div>
-    </>
+
+      <div className="absolute inset-x-0 top-7 px-1">
+        {lanes.map((lane, laneIndex) =>
+          lane.map(event => (
+            <EventBar
+              key={event.id + laneIndex}
+              event={event}
+              week={week}
+              laneIndex={laneIndex}
+              onClick={onEventClick}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ================= EVENT BAR ================= */
+function EventBar({ event, week, laneIndex, onClick }) {
+  const s = normalize(new Date(event.start_date));
+  const e = normalize(new Date(event.end_date));
+
+  let start = week.findIndex(d => d >= s);
+  let end = week.findIndex(d => d > e) - 1;
+
+  if (start === -1) start = 0;
+  if (end === -2) end = 6;
+
+  const span = end - start + 1;
+  const isMobile = window.innerWidth < 640;
+
+  return (
+    <div
+      onClick={() => onClick(event)}
+      className="absolute bg-green-400 border-l-8 border-green-600 text-white hover:bg-green-500 text-[6px] mt-3 md:text-xs rounded-md md:rounded-lg px-2 py-1 shadow cursor-pointer"
+      style={{
+        top: laneIndex * (isMobile ? 22 : 30),
+        left: `${(start * 100) / 7}%`,
+        width: `${(span * 100) / 7}%`,
+      }}
+    >
+      <span className="block truncate">
+        {event.start_time?.slice(0, 5)} {event.title}
+      </span>
+    </div>
+  );
+}
+
+/* ================= Image ================= */
+function EventImages({ images }) {
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className="mt-4">
+      {images.map((img, i) => (
+        <img
+          key={i}
+          src={img.url}
+          alt=""
+          loading="lazy"
+          className="w-full h-72 object-cover rounded-lg border"
+        />
+      ))}
+    </div>
+  );
+}
+
+
+/* ================= EVENT DETAIL MODAL ================= */
+function EventDetailModal({ event, onClose }) {
+  const formatDate = d =>
+    new Date(d + "T00:00:00").toLocaleDateString("en-GB", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+  const formatTime = t =>
+    new Date(`1970-01-01T${t}`).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-3">
+      <div className="bg-white w-full max-w-xl rounded-t-2xl sm:rounded-2xl max-h-[95vh] overflow-y-auto shadow-2xl">
+
+        <div className="bg-green-700 px-6 py-4 flex justify-between items-center">
+          <h3 className="text-lg sm:text-xl font-bold text-white">
+            {event.title}
+          </h3>
+          <button onClick={onClose} className="text-white">
+            <X />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-4 text-sm">
+          <DetailRow icon={<CalendarDays />} label="Date">
+            {event.start_date === event.end_date
+              ? formatDate(event.start_date)
+              : `${formatDate(event.start_date)} → ${formatDate(event.end_date)}`}
+          </DetailRow>
+
+          <DetailRow icon={<Clock />} label="Time">
+            {formatTime(event.start_time)} – {formatTime(event.end_time)}
+          </DetailRow>
+
+          <DetailRow icon={<MapPin />} label="Location">
+            {event.location || "N/A"}
+          </DetailRow>
+
+          <DetailRow icon={<User />} label="Organizer">
+            {event.organizer || "N/A"}
+          </DetailRow>
+
+          {event.phone && (
+            <DetailRow icon={<Phone />} label="Telegram">
+              {event.phone}
+            </DetailRow>
+          )}
+
+          {event.organizer_email && (
+            <DetailRow icon={<Mail />} label="Email">
+              <a
+                href={`mailto:${event.organizer_email}`}
+                className="text-blue-700 hover:underline break-all"
+              >
+                {event.organizer_email}
+              </a>
+            </DetailRow>
+          )}
+
+          <DetailRow icon={<FileText />} label="Description">
+            {event.description || "No description"}
+          </DetailRow>
+
+          {/* ✅ IMAGES */}
+          {event.images?.length > 0 && (
+            <DetailRow icon={<ImageIcon className="text-green-600" />} label="Poster">
+              <EventImages images={event.images} />
+            </DetailRow>
+          )}
+
+          {/* Register */}
+          {event.registration_link && (
+            <a
+              href={event.registration_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 bg-green-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-700 transition"
+            >
+              <UserPlus size={18} />
+              Register Now
+            </a>
+          )}
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ================= DETAIL ROW ================= */
+function DetailRow({ icon, label, children }) {
+  return (
+    <div className="flex gap-4">
+      <div className="text-green-600">{icon}</div>
+      <div>
+        <p className="font-semibold">{label}: <span className="font-normal ml-2">{children}</span></p>
+        <div></div>
+      </div>
+    </div>
   );
 }
