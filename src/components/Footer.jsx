@@ -323,7 +323,7 @@ export default function Footer() {
 
               {/* Instagram */}
               <a
-                href="https://www.instagram.com/ngof_cambodia?igsh=aGMxaXFxeGV0Z3F2"
+                href="https://www.instagram.com/ngo_forum_cambodia/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-6 h-6 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 
