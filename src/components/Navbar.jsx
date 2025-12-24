@@ -210,7 +210,7 @@ export default function Navbar() {
             <button className="hover:text-green-700">Who We Are</button>
             {openDropdown === "who" && (
               <div
-                className="absolute left-1/2 lg:left-[19.65rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
+                className="absolute left-1/2 lg:left-[23rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
                 onMouseEnter={() => setOpenDropdown("who")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -257,7 +257,7 @@ export default function Navbar() {
             <button className="hover:text-green-700">What We Do</button>
             {openDropdown === "what" && (
               <div
-                className="absolute left-1/2 lg:left-[11.4rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
+                className="absolute left-1/2 lg:left-[14.75rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
                 onMouseEnter={() => setOpenDropdown("what")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -304,7 +304,7 @@ export default function Navbar() {
             <button className="hover:text-green-700">Resource Hub</button>
             {openDropdown === "resource" && (
               <div
-                className="absolute left-1/2 lg:-right-[1rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
+                className="absolute left-1/2 lg:left-[6.5rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
                 onMouseEnter={() => setOpenDropdown("resource")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -351,7 +351,7 @@ export default function Navbar() {
             <button className="hover:text-green-700">Get Involved</button>
             {openDropdown === "involved" && (
               <div
-                className="absolute left-1/2 lg:-left-[5.65rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
+                className="absolute left-1/2 lg:-left-[2.3rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
                 onMouseEnter={() => setOpenDropdown("involved")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -398,7 +398,7 @@ export default function Navbar() {
             <button className="hover:text-green-700">Our Project</button>
             {openDropdown === "project" && (
               <div
-                className="absolute left-1/2 lg:-left-[13.9rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
+                className="absolute left-1/2 lg:-left-[10.55rem] -translate-x-1/2 top-full mt-4 bg-green-700 text-white rounded-md shadow-xl w-[95vw] md:w-[900px] lg:w-[1000px] flex flex-col md:flex-row justify-between"
                 onMouseEnter={() => setOpenDropdown("project")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -439,6 +439,24 @@ export default function Navbar() {
               </div>
             )}
           </li>
+
+          {/* Calendar */}
+          <li>
+            <NavLink
+              to="/calendar"
+              className={({ isActive }) =>
+                `hidden lg:block px-4 sm:px-6 py-1 rounded-md text-sm sm:text-base transition
+                ${isActive
+                  ? "text-white bg-yellow-500"
+                  : "hover:text-green-700"
+                }`
+              }
+            >
+              Calendar
+            </NavLink>
+          </li>
+
+
         </ul>
 
         {/* ✅ Donate Button responsive */}
@@ -506,12 +524,24 @@ export default function Navbar() {
               closeMenu={() => setMobileMenu(false)}
             />
 
+            {/* Calendar */}
+            <div className="border-b border-gray-200 py-2">
+              <Link
+                to="/calendar"
+                onClick={() => setMobileMenu(false)}
+                className="block py-2 text-gray-800 font-medium hover:text-green-700"
+              >
+                Calendar
+              </Link>
+            </div>
+
+
             {/* Language & Donate */}
             <div className="flex items-center justify-between mt-6">
               <span className="font-medium text-gray-700">Language:</span>
               <NavLink
-                to="/donate" 
-                onClick={() => setMobileMenu(false)} 
+                to="/donate"
+                onClick={() => setMobileMenu(false)}
                 className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md text-sm font-medium">
                 Donate
               </NavLink>

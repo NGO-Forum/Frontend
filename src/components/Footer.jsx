@@ -267,6 +267,17 @@ export default function Footer() {
                   Impacts
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink to="/calendar"
+                  className={({ isActive }) =>
+                    isActive ? "underline font-semibold text-yellow-300" : "hover:underline"
+                  }
+                >
+                  Calendar
+                </NavLink>
+              </li>
+
             </ul>
 
           </div>

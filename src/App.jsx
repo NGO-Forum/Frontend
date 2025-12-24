@@ -41,6 +41,9 @@ import SearchPage from "./pages/SearchPage";
 import Donate from "./pages/Donate";
 import DonateInfo from "./pages/Infor";
 
+// Calendar
+import CalendarPage from "./pages/CalendarPage";
+
 // ADMIN PAGES
 import AdminLayout from "./admins/page/AdminLayout";
 import PeopleAdmin from "./admins/page/PeopleAdmin";
@@ -101,6 +104,7 @@ export default function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/donate/info" element={<DonateInfo />} />
         <Route path="/comments" element={<Comments />} />
+        <Route path="/calendar" element={<CalendarPage />} />
 
         {/* ADMIN ROUTES (NO NAVBAR/FOOTER) */}
         <Route path="/admin/login" element={<AdminLogin />} />
