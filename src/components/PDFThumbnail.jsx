@@ -4,63 +4,33 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-export default function PDFThumbnail({ fileUrl, token }) {
+export default function PDFThumbnail({ fileUrl }) {
   const canvasRef = useRef(null);
-  const renderTaskRef = useRef(null);
 
   useEffect(() => {
-    let cancelled = false;
-
-    const renderPdf = async () => {
+    const render = async () => {
       try {
-        if (renderTaskRef.current) {
-          renderTaskRef.current.cancel();
-        }
-
-        const loadingTask = pdfjsLib.getDocument({
-          url: fileUrl,
-          httpHeaders: token
-            ? { Authorization: `Bearer ${token}` }
-            : undefined,
-          withCredentials: false,
-        });
-
-        const pdf = await loadingTask.promise;
-        if (cancelled) return;
-
+        const pdf = await pdfjsLib.getDocument({ url: fileUrl }).promise;
         const page = await pdf.getPage(1);
-        if (cancelled) return;
 
-        const viewport = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: 1.2 });
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
         canvas.width = viewport.width;
         canvas.height = viewport.height;
 
-        const renderTask = page.render({
+        await page.render({
           canvasContext: ctx,
           viewport,
-        });
-
-        renderTaskRef.current = renderTask;
-        await renderTask.promise;
-
-      } catch (err) {
-        if (err?.name === "RenderingCancelledException") return;
-        console.error("PDF render error:", err);
+        }).promise;
+      } catch (e) {
+        console.error("PDF thumbnail error", e);
       }
     };
 
-    renderPdf();
-
-    return () => {
-      cancelled = true;
-      if (renderTaskRef.current) {
-        renderTaskRef.current.cancel();
-      }
-    };
-  }, [fileUrl, token]);
+    render();
+  }, [fileUrl]);
 
   return (
     <canvas
