@@ -10,40 +10,26 @@ export default function PDFThumbnail({ fileUrl }) {
 
   useEffect(() => {
     let cancelled = false;
-    let objectUrl = null;
 
     const renderPdf = async () => {
       try {
         if (!fileUrl) return;
 
-        // Cancel previous render
         if (renderTaskRef.current) {
           renderTaskRef.current.cancel();
         }
 
-        // 🔥 FETCH PDF AS BLOB
-        const res = await fetch(fileUrl, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // remove if public
-          },
-          credentials: "include", // if using cookies
-        });
+        const pdf = await pdfjsLib.getDocument({
+          url: fileUrl,
+          withCredentials: false,
+        }).promise;
 
-        if (!res.ok) {
-          throw new Error(`PDF fetch failed: ${res.status}`);
-        }
-
-        const blob = await res.blob();
-        objectUrl = URL.createObjectURL(blob);
-
-        const pdf = await pdfjsLib.getDocument(objectUrl).promise;
         if (cancelled) return;
 
         const page = await pdf.getPage(1);
         if (cancelled) return;
 
         const viewport = page.getViewport({ scale: 1 });
-
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
@@ -70,9 +56,6 @@ export default function PDFThumbnail({ fileUrl }) {
       cancelled = true;
       if (renderTaskRef.current) {
         renderTaskRef.current.cancel();
-      }
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
       }
     };
   }, [fileUrl]);
