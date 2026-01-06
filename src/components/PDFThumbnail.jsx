@@ -4,21 +4,28 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-export default function PDFThumbnail({ fileUrl }) {
+export default function PDFThumbnail({ fileUrl, token }) {
   const canvasRef = useRef(null);
-  const renderTaskRef = useRef(null); // store active render
+  const renderTaskRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
 
     const renderPdf = async () => {
       try {
-        // Cancel previous render if still running
         if (renderTaskRef.current) {
           renderTaskRef.current.cancel();
         }
 
-        const pdf = await pdfjsLib.getDocument(fileUrl).promise;
+        const loadingTask = pdfjsLib.getDocument({
+          url: fileUrl,
+          httpHeaders: token
+            ? { Authorization: `Bearer ${token}` }
+            : undefined,
+          withCredentials: false,
+        });
+
+        const pdf = await loadingTask.promise;
         if (cancelled) return;
 
         const page = await pdf.getPage(1);
@@ -37,11 +44,10 @@ export default function PDFThumbnail({ fileUrl }) {
         });
 
         renderTaskRef.current = renderTask;
-
         await renderTask.promise;
 
       } catch (err) {
-        if (err?.name === "RenderingCancelledException") return; // ignore
+        if (err?.name === "RenderingCancelledException") return;
         console.error("PDF render error:", err);
       }
     };
@@ -54,7 +60,7 @@ export default function PDFThumbnail({ fileUrl }) {
         renderTaskRef.current.cancel();
       }
     };
-  }, [fileUrl]);
+  }, [fileUrl, token]);
 
   return (
     <canvas
