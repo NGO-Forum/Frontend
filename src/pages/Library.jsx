@@ -113,10 +113,10 @@ export default function Libray() {
               </div>
 
               {doc.file_kh ? (
-                <PDFThumbnail fileUrl={`https://api.ngoforum.site/pdf/librarys/${doc.file_kh}`} />
+                <PDFThumbnail fileUrl={`https://api.ngoforum.site/pdf/${doc.file_kh}`} />
               ) : (
                 doc.file_en && (
-                  <PDFThumbnail fileUrl={`https://api.ngoforum.site/pdf/librarys/${doc.file_en}`} />
+                  <PDFThumbnail fileUrl={`https://api.ngoforum.site/pdf/${doc.file_en}`} />
                 )
               )}
 

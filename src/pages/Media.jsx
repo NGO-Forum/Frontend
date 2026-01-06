@@ -200,12 +200,12 @@ export default function MediaContact() {
               {/* THUMBNAIL */}
               {doc.file_kh ? (
                 <PDFThumbnail
-                  fileUrl={`https://api.ngoforum.site/pdf/documents/${doc.file_kh}`}
+                  fileUrl={`https://api.ngoforum.site/pdf/${doc.file_kh}`}
                   className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
                 />
               ) : doc.file_en ? (
                 <PDFThumbnail
-                  fileUrl={`https://api.ngoforum.site/pdf/documents/${doc.file_en}`}
+                  fileUrl={`https://api.ngoforum.site/pdf/${doc.file_en}`}
                   className="w-full lg:h-[350px] h-[200px] md:h-[300px]"
                 />
               ) : (
