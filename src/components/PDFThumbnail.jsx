@@ -6,30 +6,54 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 export default function PDFThumbnail({ fileUrl }) {
   const canvasRef = useRef(null);
+  const renderTaskRef = useRef(null); // store active render
 
   useEffect(() => {
-    const render = async () => {
-      try {
-        const pdf = await pdfjsLib.getDocument({ url: fileUrl }).promise;
-        const page = await pdf.getPage(1);
+    let cancelled = false;
 
-        const viewport = page.getViewport({ scale: 1.2 });
+    const renderPdf = async () => {
+      try {
+        // Cancel previous render if still running
+        if (renderTaskRef.current) {
+          renderTaskRef.current.cancel();
+        }
+
+        const pdf = await pdfjsLib.getDocument(fileUrl).promise;
+        if (cancelled) return;
+
+        const page = await pdf.getPage(1);
+        if (cancelled) return;
+
+        const viewport = page.getViewport({ scale: 1 });
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
         canvas.width = viewport.width;
         canvas.height = viewport.height;
 
-        await page.render({
+        const renderTask = page.render({
           canvasContext: ctx,
           viewport,
-        }).promise;
-      } catch (e) {
-        console.error("PDF thumbnail error", e);
+        });
+
+        renderTaskRef.current = renderTask;
+
+        await renderTask.promise;
+
+      } catch (err) {
+        if (err?.name === "RenderingCancelledException") return; // ignore
+        console.error("PDF render error:", err);
       }
     };
 
-    render();
+    renderPdf();
+
+    return () => {
+      cancelled = true;
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel();
+      }
+    };
   }, [fileUrl]);
 
   return (
