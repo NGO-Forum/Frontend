@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Facebook, Instagram, Youtube, Linkedin, X } from "lucide-react";
+import { FaTiktok } from "react-icons/fa";
 import { useState } from "react";
 
 export default function Footer() {
@@ -364,6 +365,17 @@ export default function Footer() {
                hover:scale-110 hover:shadow-xl border border-white/20 transition-all duration-300"
               >
                 <X className="text-white" size={16} />
+              </a>
+
+              {/* X (Twitter) */}
+              <a
+                href="https://www.tiktok.com/@thengoforum_cambodia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-6 h-6 rounded-full bg-black flex items-center justify-center 
+               hover:scale-110 hover:shadow-xl border border-white/20 transition-all duration-300"
+              >
+                <FaTiktok className="text-white" size={16} />
               </a>
 
             </div>
