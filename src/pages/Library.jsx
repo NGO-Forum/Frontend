@@ -14,7 +14,7 @@ export default function Libray() {
   const [lastPage, setLastPage] = useState(1);
 
   const imgUrl = (p) =>
-    p ? `https://api.ngoforum.site/storage/${p}` : "/images/no-image.png";
+    p ? `https://api.ngoforum.org.kh/storage/${p}` : "/images/no-image.png";
 
   const loadDocuments = async () => {
     try {
@@ -113,10 +113,10 @@ export default function Libray() {
               </div>
 
               {doc.file_kh ? (
-                <PDFThumbnail fileUrl={`https://api.ngoforum.site/storage/${doc.file_kh}`} />
+                <PDFThumbnail fileUrl={`https://api.ngoforum.org.kh/storage/${doc.file_kh}`} />
               ) : (
                 doc.file_en && (
-                  <PDFThumbnail fileUrl={`https://api.ngoforum.site/storage/${doc.file_en}`} />
+                  <PDFThumbnail fileUrl={`https://api.ngoforum.org.kh/storage/${doc.file_en}`} />
                 )
               )}
 

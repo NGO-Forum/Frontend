@@ -25,7 +25,7 @@ export default function CommentList({ comment }) {
                 <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center overflow-hidden">
                     {images.length > 0 ? (
                         <img
-                            src={`http://localhost:8000/storage/${images[0]}`}
+                            src={`http://api.ngoforum.org.kh/storage/${images[0]}`}
                             className="w-full h-full object-cover"
                             alt="comment avatar"
                         />

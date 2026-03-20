@@ -47,7 +47,7 @@ export default function Volunteer() {
               <div className="flex justify-center">
                 {v.img ? (
                   <img
-                    src={`https://api.ngoforum.site/storage/${v.img}`}
+                    src={`https://api.ngoforum.org.kh/storage/${v.img}`}
                     alt={v.name}
                     className="w-48 h-48 object-cover rounded-full border-2 border-green-600"
                   />
@@ -109,7 +109,7 @@ export default function Volunteer() {
               <img
                 src={
                   selectedVolunteer.img
-                    ? `https://api.ngoforum.site/storage/${selectedVolunteer.img}`
+                    ? `https://api.ngoforum.org.kh/storage/${selectedVolunteer.img}`
                     : "/images/icon.jpg"
                 }
                 className="w-40 md:w-48 h-40 md:h-48 object-cover rounded-full border-4 border-green-600 shadow"

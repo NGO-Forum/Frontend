@@ -7,7 +7,7 @@ export default function PostCard({ post }) {
   const [fullscreen, setFullscreen] = useState(false);
   const imgUrl = (path) => {
     if (!path) return "/images/no-image.png";
-    return `https://api.ngoforum.site/storage/${path}`;
+    return `https://api.ngoforum.org.kh/storage/${path}`;
   };
 
   useEffect(() => {
@@ -144,7 +144,7 @@ export default function PostCard({ post }) {
         {post.file && (
           <div className="mt-4">
             <a
-              href={`https://api.ngoforum.site/storage/${post.file}`}
+              href={`https://api.ngoforum.org.kh/storage/${post.file}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm lg:text-lg font-semibold text-green-600 hover:text-green-900"

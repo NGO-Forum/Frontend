@@ -134,7 +134,7 @@ export default function VolunteerAdmin() {
                   <td className="px-4 py-3">
                     {v.img ? (
                       <img
-                        src={`https://api.ngoforum.site/storage/${v.img}`}
+                        src={`https://api.ngoforum.org.kh/storage/${v.img}`}
                         className="w-12 h-12 rounded-full object-cover border"
                       />
                     ) : (

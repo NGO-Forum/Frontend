@@ -212,7 +212,7 @@ export default function OrganizationalStructure() {
 
   const imgUrl = (path) => {
     if (!path) return "/images/no-image.png";
-    return `https://api.ngoforum.site/storage/${path}`;
+    return `https://api.ngoforum.org.kh/storage/${path}`;
   };
 
   const [selectedPerson, setSelectedPerson] = useState(null);

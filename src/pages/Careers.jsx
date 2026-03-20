@@ -65,7 +65,7 @@ export default function Careers() {
               <div className="flex items-center gap-4">
                 {job.image ? (
                   <img
-                    src={`https://api.ngoforum.site/storage/${job.image}`}
+                    src={`https://api.ngoforum.org.kh/storage/${job.image}`}
                     alt={job.title}
                     className="w-16 h-16 object-cover rounded-xl border"
                   />
@@ -166,7 +166,7 @@ export default function Careers() {
             {selectedJob.attachment && (
               <div className="mt-6 w-[180px]">
                 <a
-                  href={`https://api.ngoforum.site/storage/${selectedJob.attachment}`}
+                  href={`https://api.ngoforum.org.kh/storage/${selectedJob.attachment}`}
                   target="_blank"
                   className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800"
                 >

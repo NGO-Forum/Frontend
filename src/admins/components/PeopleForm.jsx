@@ -230,7 +230,7 @@ export default function PeopleForm({
                 src={
                   form.img instanceof File
                     ? URL.createObjectURL(form.img)
-                    : `https://api.ngoforum.site/storage/${form.img}`
+                    : `https://api.ngoforum.org.kh/storage/${form.img}`
                 }
                 className="w-full h-full object-cover"
               />

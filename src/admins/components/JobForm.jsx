@@ -166,7 +166,7 @@ export default function JobForm({ editingJob, onSaved, onCancel }) {
 
           {editingJob?.attachment && (
             <a
-              href={`https://api.ngoforum.site/storage/${editingJob.attachment}`}
+              href={`https://api.ngoforum.org.kh/storage/${editingJob.attachment}`}
               target="_blank"
               className="block text-blue-600 underline text-sm mb-2"
             >

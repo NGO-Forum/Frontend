@@ -38,12 +38,12 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
       setOldImages(editingPost.images || []);
       setPreviews(
         editingPost.images?.map(
-          (img) => `https://api.ngoforum.site/storage/${img}`
+          (img) => `https://api.ngoforum.org.kh/storage/${img}`
         ) || []
       );
 
       if (editingPost.file) {
-        setOldFile(`https://api.ngoforum.site/storage/${editingPost.file}`);
+        setOldFile(`https://api.ngoforum.org.kh/storage/${editingPost.file}`);
       }
     }
   }, [editingPost]);
@@ -61,7 +61,7 @@ export default function PostForm({ editingPost, onSaved, onCancel }) {
     setNewImages(updatedNewImages);
 
     const updatedPreview = [
-      ...oldImages.map((img) => `https://api.ngoforum.site/storage/${img}`),
+      ...oldImages.map((img) => `https://api.ngoforum.org.kh/storage/${img}`),
       ...updatedNewImages.map((img) => URL.createObjectURL(img))
     ];
 

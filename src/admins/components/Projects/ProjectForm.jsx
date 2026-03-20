@@ -337,7 +337,7 @@ export default function ProjectForm({ project, onClose, onSave }) {
                             "
                                     >
                                         <img
-                                            src={`https://api.ngoforum.site/storage/${img}`}
+                                            src={`https://api.ngoforum.org.kh/storage/${img}`}
                                             className="w-full h-32 object-cover transition group-hover:brightness-75"
                                         />
 

@@ -21,7 +21,7 @@ export default function VolunteerForm({ editing, onSaved, onCancel }) {
       setDescription(editing.description || "");
 
       if (editing.img) {
-        setPreview(`https://api.ngoforum.site/storage/${editing.img}`);
+        setPreview(`https://api.ngoforum.org.kh/storage/${editing.img}`);
       }
     }
   }, [editing]);
