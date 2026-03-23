@@ -52,6 +52,9 @@ export default function PostAdmin() {
     setDeleteItem(null);
   };
 
+  const imgUrl = (path) =>
+    path ? `https://api.ngoforum.org.kh/storage/${path}` : "/images/no-image.png";
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -114,25 +117,19 @@ export default function PostAdmin() {
           <tbody>
             {posts.map((p) => (
               <tr key={p.id} className="border-t">
-
-                {/* ✅ FIXED IMAGE */}
                 <td className="px-4 py-2">
-                  {p.images?.[0]?.image ? (
-                    <img
-                      src={`https://api.ngoforum.org.kh/storage/${p.images[0].image}`}
-                      className="w-12 h-12 rounded-full object-cover border"
-                      onError={(e) => {
-                        e.currentTarget.src = "/images/no-image.png";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-gray-300" />
-                  )}
+                  <img
+                    src={
+                      p.images && p.images.length > 0
+                        ? imgUrl(p.images[0])   // FIRST IMAGE
+                        : "/images/no-image.png"
+                    }
+                    alt={p.title}
+                    className="h-8 w-8 object-cover rounded-full"
+                  />
                 </td>
 
-                <td className="px-4 py-2 whitespace-nowrap max-w-[250px] truncate">
-                  {p.title}
-                </td>
+                <td className="px-4 py-2 whitespace-nowrap max-w-[250px] truncate">{p.title}</td>
 
                 <td className="px-4 py-2">
                   {p.published_at
@@ -141,9 +138,7 @@ export default function PostAdmin() {
                 </td>
 
                 <td className="px-4 py-2 whitespace-nowrap max-w-[200px] truncate">
-                  {p.description
-                    ? p.description.substring(0, 60) + "..."
-                    : "-"}
+                  {p.description ? p.description.substring(0, 60) + "..." : "-"}
                 </td>
 
                 <td className="px-4 py-2 text-center relative">
@@ -180,9 +175,11 @@ export default function PostAdmin() {
         </button>
 
         {(() => {
+          // Calculate the 3 pages to show
           let start = Math.max(1, page - 1);
           let end = Math.min(lastPage, start + 2);
 
+          // If near the end, shift window back
           if (end - start < 2) {
             start = Math.max(1, end - 2);
           }
@@ -193,10 +190,10 @@ export default function PostAdmin() {
               <button
                 key={pageNum}
                 onClick={() => setPage(pageNum)}
-                className={`w-10 h-10 rounded-full font-semibold text-lg ${page === pageNum
+                className={`w-10 h-10 rounded-full font-semibold text-lg lg:text-xl
+          ${page === pageNum
                     ? "bg-green-700 text-white"
-                    : "bg-white shadow"
-                  }`}
+                    : "bg-white shadow"}`}
               >
                 {pageNum}
               </button>
