@@ -7,8 +7,7 @@ import {
   MapPin,
   User,
   FileText,
-  Image as ImageIcon,
-  UserPlus,
+  Paperclip,
   Phone,
   Mail,
   X,
@@ -33,7 +32,7 @@ export default function CalendarPage() {
 
   useEffect(() => {
     fetch(
-      `https://membership.ngoforum.site/api/calendar?month=${month + 1}&year=${year}`
+      `https://membership.ngoforum.org.kh/api/calendar?month=${month + 1}&year=${year}`
     )
       .then(res => res.json())
       .then(data => setEvents(data.events || []))
@@ -221,19 +220,25 @@ function EventBar({ event, week, laneIndex, onClick }) {
 }
 
 /* ================= Image ================= */
-function EventImages({ images }) {
-  if (!images || images.length === 0) return null;
+function EventFiles({ files }) {
+  if (!files || files.length === 0) return null;
 
   return (
-    <div className="mt-4">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img.url}
-          alt=""
-          loading="lazy"
-          className="w-full h-72 object-cover rounded-lg border"
-        />
+    <div className="mt-4 space-y-2">
+      {files.map((file, index) => (
+        <a
+          key={index}
+          href={file.url}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-between rounded-xl border border-green-200 text-gray-800 bg-green-100 px-4 py-1.5 hover:bg-green-50 transition hover:text-blue-600"
+        >
+          <div className="min-w-0">
+            <p className="truncate font-medium ">
+              {file.file_name}
+            </p>
+          </div>
+        </a>
       ))}
     </div>
   );
@@ -310,24 +315,13 @@ function EventDetailModal({ event, onClose }) {
             {event.description || "No description"}
           </DetailRow>
 
-          {/* ✅ IMAGES */}
-          {event.images?.length > 0 && (
-            <DetailRow icon={<ImageIcon className="text-green-600" />} label="Poster">
-              <EventImages images={event.images} />
-            </DetailRow>
-          )}
-
-          {/* Register */}
-          {event.registration_link && (
-            <a
-              href={event.registration_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 bg-green-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-700 transition"
+          {event.files?.length > 0 && (
+            <DetailRow
+              icon={<Paperclip className="text-green-600" />}
+              label="Files"
             >
-              <UserPlus size={18} />
-              Register Now
-            </a>
+              <EventFiles files={event.files} />
+            </DetailRow>
           )}
 
         </div>
