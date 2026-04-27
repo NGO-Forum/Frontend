@@ -8,7 +8,7 @@ import LibraryTable from "../components/librarys/LibraryTable";
 export default function LibraryAdmin() {
   const [librarys, setLibrarys] = useState([]);
   const [editLibrary, setEditLibrary] = useState(null);
-  const [filters, setFilters] = useState({ type: "", year: "" });
+  const [filters, setFilters] = useState({ title: "", type: "", year: "" });
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -25,6 +25,7 @@ export default function LibraryAdmin() {
 
       const res = await api.get("/librarys", {
         params: {
+          title: filters.title,
           type: filters.type,
           year: filters.year,
           page: page,
@@ -55,14 +56,22 @@ export default function LibraryAdmin() {
 
   return (
     <div className="min-h-full bg-slate-100">
-      <div className="max-w-7xl mx-auto px-2">
+      <div className="max-w-full mx-auto">
 
         {/* HEADER */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3 p-4 bg-white rounded-lg">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-green-800">
-              Library
-            </h1>
+            <div className="flex items-center gap-3">
+              {/* Icon for the Title */}
+              <div className="p-2 bg-green-50 rounded-lg">
+                <svg className="w-8 h-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-green-800">
+                Library
+              </h1>
+            </div>
             <p className="text-sm text-slate-500 mt-1">
               Manage joint statements and other documents.
             </p>
@@ -74,9 +83,17 @@ export default function LibraryAdmin() {
                 setEditLibrary(null);
                 setShowForm(true);
               }}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
+              className="group flex items-center gap-2 px-7 py-3 rounded-full bg-gray-900 text-white text-xs font-black uppercase tracking-[0.15em] hover:bg-green-600 hover:scale-105 transition-all duration-300 shadow-xl active:scale-95 active:bg-green-700"
             >
-              + Create
+              <svg
+                className="w-5 h-5 text-green-400 group-hover:text-white transition-colors"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              Create
             </button>
           </div>
         </div>
@@ -113,11 +130,10 @@ export default function LibraryAdmin() {
             <button
               disabled={pagination.current_page === 1}
               onClick={() => fetchLibrarys(pagination.current_page - 1)}
-              className={`px-3 py-1 rounded-lg text-sm ${
-                pagination.current_page === 1
+              className={`px-3 py-1 rounded-lg text-sm ${pagination.current_page === 1
                   ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                   : "bg-white border hover:bg-gray-100"
-              }`}
+                }`}
             >
               ← Prev
             </button>
@@ -129,11 +145,10 @@ export default function LibraryAdmin() {
             <button
               disabled={pagination.current_page >= pagination.last_page}
               onClick={() => fetchLibrarys(pagination.current_page + 1)}
-              className={`px-3 py-1 rounded-lg text-sm ${
-                pagination.current_page >= pagination.last_page
+              className={`px-3 py-1 rounded-lg text-sm ${pagination.current_page >= pagination.last_page
                   ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                   : "bg-white border hover:bg-gray-100"
-              }`}
+                }`}
             >
               Next →
             </button>

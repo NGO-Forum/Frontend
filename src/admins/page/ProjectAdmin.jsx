@@ -111,58 +111,103 @@ export default function ProjectAdmin() {
 
 
   return (
-    <div className="p-2 max-w-full mx-auto space-y-6">
+    <div className="max-w-full mx-auto space-y-4">
 
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-green-700">
-          Project Admin
-        </h1>
+      <div className="mb-3 rounded-2xl bg-white px-6 py-5 flex items-center justify-between shadow-sm">
+        {/* LEFT */}
+        <div className="flex items-start gap-4">
+          {/* ICON */}
+          <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-green-100">
+            <svg
+              className="w-6 h-6 text-green-700"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 7h18M3 12h18M3 17h18"
+              />
+            </svg>
+          </div>
 
+          {/* TEXT */}
+          <div>
+            <h1 className="text-2xl font-extrabold text-green-700">
+              Project Admin
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Manage projects, activities, and reporting data.
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT BUTTON */}
         <button
-          className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow"
           onClick={handleCreate}
+          className="group flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg active:scale-95"
         >
-          + Add Project
+          <svg
+            className="w-5 h-5 text-green-400 group-hover:text-white transition"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+          </svg>
+          ADD PROJECT
         </button>
       </div>
 
-      {/* Table */}
-      <ProjectTable
-        projects={currentProjects}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {/* Table + Pagination */}
+      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        {/* Table Header */}
+        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+          <div>
+            <h2 className="text-lg font-bold text-green-700">Project List</h2>
+            <p className="text-sm text-slate-500">
+              View and manage all project records.
+            </p>
+          </div>
+        </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center gap-3 mt-2">
-        <button
-          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-          disabled={currentPage === 1}
-          className={`px-4 py-1 rounded-lg border ${
-            currentPage === 1
-              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-              : "bg-white hover:bg-gray-100"
-          }`}
-        >
-          Prev
-        </button>
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <ProjectTable
+            projects={currentProjects}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
 
-        <span className="font-medium text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
+        {/* Pagination */}
+        <div className="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-6 py-2 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-slate-600">
+            Page <span className="font-semibold">{currentPage}</span> of{" "}
+            <span className="font-semibold">{totalPages}</span>
+          </p>
 
-        <button
-          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-1 rounded-lg border ${
-            currentPage === totalPages
-              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-              : "bg-white hover:bg-gray-100"
-          }`}
-        >
-          Next
-        </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Prev
+            </button>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Modal Form */}

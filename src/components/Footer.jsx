@@ -32,7 +32,7 @@ export default function Footer() {
 
             {/* Donate Button */}
             <NavLink
-              to="/donate" className="bg-white text-green-700 px-6 py-1 rounded-md font-medium hover:bg-gray-100 w-full md:w-auto">
+              to="/donate" className="bg-white text-green-700 px-6 py-1 rounded-md font-medium hover:bg-orange-500 hover:text-white w-full md:w-auto">
               Donate
             </NavLink>
 
@@ -306,7 +306,7 @@ export default function Footer() {
 
             {/* Social */}
             <p className="mt-6 mb-3 font-medium">
-              Keep yourself informed, connect with us
+              Follow and connect with us on
             </p>
 
             <div className="flex justify-center md:justify-start lg:space-x-6 space-x-4  text-xl">

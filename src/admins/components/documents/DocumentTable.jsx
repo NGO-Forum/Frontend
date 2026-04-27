@@ -46,7 +46,7 @@ export default function DocumentTable({ documents, setEditDoc, onDelete }) {
         <tbody className="divide-y divide-slate-200">
           {documents.map((doc) => (
             <tr key={doc.id} className="hover:bg-slate-50">
-              <td className="px-4 py-1 whitespace-nowrap max-w-[150px] truncate line-clamp-1">{doc.title}</td>
+              <td className="px-4 py-1 whitespace-nowrap max-w-[400px] truncate line-clamp-1">{doc.title}</td>
 
               <td className="px-4 py-1">
                 <span className="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs border">

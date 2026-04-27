@@ -57,20 +57,45 @@ export default function NetworksAdmin() {
 
 
     return (
-        <div className="max-w-full mx-auto p-2">
+        <div className="max-w-full mx-auto">
             {/* HEADER */}
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-green-700">Networks</h1>
+            <div className="relative overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-sm">
 
-                <button
-                    onClick={() => {
-                        setEditingNetwork(null);
-                        setShowForm(true);
-                    }}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                >
-                    ➕ Create
-                </button>
+                <div className="relative flex flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
+
+                    {/* Title Section */}
+                    <div className="flex items-center gap-4">
+
+                        {/* Icon */}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-green-500 text-white shadow-lg shadow-emerald-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5V4H2v16h5M9 20h6M12 16v4M8 8h8M8 12h6" />
+                            </svg>
+                        </div>
+
+                        {/* Text */}
+                        <div>
+                            <h1 className="text-2xl font-bold text-slate-800">
+                                Networks
+                            </h1>
+                            <p className="text-sm text-slate-500">
+                                Manage and organize all network groups
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <button
+                        onClick={() => {
+                            setEditingNetwork(null);
+                            setShowForm(true);
+                        }}
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] hover:shadow-lg"
+                    >
+                        <span className="text-lg">+</span>
+                        Create Network
+                    </button>
+                </div>
             </div>
 
             {/* NETWORK FORM (Modal or inline as implemented) */}
@@ -85,11 +110,11 @@ export default function NetworksAdmin() {
             )}
 
             {/* NETWORK LIST */}
-            <div className="grid gap-6 mt-6 overflow-y-auto max-h-[87vh] pr-2 scrollbar">
+            <div className="grid gap-4 mt-4 overflow-y-auto max-h-[80vh] pr-2 scrollbar">
                 {networks.map((network) => (
                     <div
                         key={network.id}
-                        className="bg-white border border-gray-200 shadow-sm rounded-xl p-6"
+                        className="bg-white border border-gray-200 shadow-sm rounded-xl p-4"
                     >
                         {/* HEADER */}
                         <div className="flex justify-between items-center mb-4">

@@ -7,10 +7,43 @@ export default function Careers() {
   const [selectedJob, setSelectedJob] = useState(null); // <-- for modal
   const [showApplyForm, setShowApplyForm] = useState(false);
 
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+  });
+
+  const loadJobs = async (page = 1) => {
+    try {
+      const res = await api.get("/jobs", {
+        params: { page },
+      });
+
+      setJobs(res.data.data || []);
+      setPagination({
+        current_page: res.data.current_page,
+        last_page: res.data.last_page,
+        total: res.data.total,
+      });
+    } catch (error) {
+      console.error("Failed to load jobs:", error);
+    }
+  };
 
   useEffect(() => {
-    api.get("/jobs").then((res) => setJobs(res.data));
+    loadJobs(1);
   }, []);
+
+  const getTitle = (title) => {
+    if (!title) return "No title";
+
+    const isMobile = window.innerWidth < 640; // Tailwind sm breakpoint
+    const maxLength = isMobile ? 30 : 120;
+
+    return title.length > maxLength
+      ? `${title.substring(0, maxLength)}...`
+      : title;
+  };
 
   const formatDate = (date) => {
     if (!date) return "Open Until Filled";
@@ -67,28 +100,28 @@ export default function Careers() {
                   <img
                     src={`https://api.ngoforum.org.kh/storage/${job.image}`}
                     alt={job.title}
-                    className="w-16 h-16 object-cover rounded-xl border"
+                    className="w-10 md:w-16 h-10 md:h-16 object-cover rounded-xl border"
                   />
                 ) : (
                   <img
                     src="/images/GetInvolved/card.png"
                     alt="Career Banner"
-                    className="w-16 h-16 object-cover rounded-xl border"
+                    className="w-10 md:w-16 h-10 md:h-16 object-cover rounded-xl border"
                   />
                 )}
                 <div>
-                  <h3 className="text-base lg:text-lg font-bold text-green-600">
-                    {job.title}
+                  <h3 className="text-sm lg:text-lg font-bold text-green-600">
+                    {getTitle(job.title)}
                   </h3>
 
-                  <p className="text-gray-500 text-sm mt-1">
+                  <p className="text-gray-500 text-xs md:text-sm mt-1">
                     <span className="font-semibold">Closing Date:</span> {formatDate(job.closing_date)}
                   </p>
                 </div>
               </div>
 
               {/* RIGHT — LOCATION + TYPE (MOBILE STACK) */}
-              <div className="mt-4 flex flex-row md:flex-col justify-start items-center md:mt-0 text-left md:text-right">
+              <div className="mt-2 md:mt-4 flex flex-row md:flex-col justify-start items-center text-left md:text-right">
                 <p className="text-gray-700 text-sm md:text-base mr-6">Phnom Penh</p>
 
                 <p className="text-blue-600 font-semibold mt-1 text-sm md:text-base">
@@ -104,7 +137,30 @@ export default function Careers() {
             </p>
           )}
         </div>
+        <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-4">
+          <p className="text-sm text-slate-600">
+            Page <span className="font-semibold">{pagination.current_page}</span> of{" "}
+            <span className="font-semibold">{pagination.last_page}</span>
+          </p>
 
+          <div className="flex items-center gap-2">
+            <button
+              disabled={pagination.current_page === 1}
+              onClick={() => loadJobs(pagination.current_page - 1)}
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Prev
+            </button>
+
+            <button
+              disabled={pagination.current_page === pagination.last_page}
+              onClick={() => loadJobs(pagination.current_page + 1)}
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* ======================= DETAIL MODAL ======================= */}
@@ -121,19 +177,19 @@ export default function Careers() {
               ✕
             </button>
 
-            <h2 className="text-xl lg:text-3xl font-bold text-green-700">{selectedJob.title}</h2>
+            <h2 className="text-base lg:text-xl font-bold text-green-700">{selectedJob.title}</h2>
 
-            <p className="mt-2 text-gray-600 text-lg">
+            <p className="mt-2 text-gray-600 text-sm md:text-lg">
               <strong>Closing Date:</strong> {formatDate(selectedJob.closing_date)}
             </p>
 
             {selectedJob.department && (
-              <p className="mt-2 text-gray-700">
+              <p className="mt-2 text-gray-700 text-sm md:text-lg">
                 <strong>Department:</strong> {selectedJob.department}
               </p>
             )}
 
-            <div className="mt-2 text-gray-700">
+            <div className="mt-2 text-gray-700 text-sm md:text-lg">
               <strong>Email:</strong>{" "}
               <a href="mailto:job@ngoforum.org.kh" className="text-blue-600 underline">
                 job@ngoforum.org.kh
@@ -141,18 +197,18 @@ export default function Careers() {
             </div>
 
             {/* DESCRIPTION */}
-            <div className="mt-6">
-              <h3 className="text-lg lg:text-2xl font-bold text-green-700 mb-3">Job Description</h3>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+            <div className="mt-2 md:mt-6">
+              <h3 className="text-sm md:text-lg font-bold text-green-700 mb-1 md:mb-3">Job Description</h3>
+              <p className="text-gray-700 text-xs md:text-sm leading-relaxed whitespace-pre-line">
                 {selectedJob.description}
               </p>
             </div>
 
             {/* REQUIREMENTS */}
             {selectedJob.requirements && (
-              <div className="mt-6">
-                <h3 className="text-lg lg:text-2xl font-bold text-green-700 mb-3">Requirements</h3>
-                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+              <div className="mt-2 md:mt-6">
+                <h3 className="text-sm md:text-lg font-bold text-green-700 mb-3">Requirements</h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700 text-xs md:text-sm">
                   {selectedJob.requirements
                     ?.split("\n")
                     .filter((r) => r.trim() !== "")
@@ -164,7 +220,7 @@ export default function Careers() {
             )}
 
             {selectedJob.attachment && (
-              <div className="mt-6 w-[180px]">
+              <div className="mt-2 md:mt-6 w-[180px]">
                 <a
                   href={`https://api.ngoforum.org.kh/storage/${selectedJob.attachment}`}
                   target="_blank"
@@ -191,10 +247,10 @@ export default function Careers() {
 
 
             {/* Apply button */}
-            <div className="mt-8">
+            <div className="mt-4 md:mt-8">
               <button
                 onClick={() => setShowApplyForm(true)}
-                className="bg-green-700 text-white px-6 py-3 rounded-lg shadow hover:bg-green-800 transition"
+                className="bg-green-700 text-white px-6 py-2 md:py-3 rounded-lg shadow hover:bg-green-800 transition"
               >
                 Apply Now
               </button>

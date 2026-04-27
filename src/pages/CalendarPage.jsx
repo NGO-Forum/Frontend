@@ -12,6 +12,8 @@ import {
   Mail,
   X,
 } from "lucide-react";
+import Swal from "sweetalert2";
+
 
 /* ================= HELPERS ================= */
 const normalize = d =>
@@ -33,6 +35,7 @@ export default function CalendarPage() {
   useEffect(() => {
     fetch(
       `https://membership.ngoforum.org.kh/api/calendar?month=${month + 1}&year=${year}`
+      // `http://127.0.0.1:8000/api/calendar?month=${month + 1}&year=${year}`
     )
       .then(res => res.json())
       .then(data => setEvents(data.events || []))
@@ -247,6 +250,72 @@ function EventFiles({ files }) {
 
 /* ================= EVENT DETAIL MODAL ================= */
 function EventDetailModal({ event, onClose }) {
+
+  const [message, setMessage] = useState("");
+  const [senderName, setSenderName] = useState("");
+  const [senderEmail, setSenderEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [showMessageForm, setShowMessageForm] = useState(false);
+
+  const sendMessage = async () => {
+    if (!senderName || !senderEmail || !message) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing fields",
+        text: "Please fill name, email, and message.",
+        confirmButtonColor: "#16a34a",
+      });
+      return;
+    }
+
+
+    setSending(true);
+
+    try {
+      const res = await fetch("https://membership.ngoforum.org.kh/api/events/send-email",
+      // const res = await fetch("http://127.0.0.1:8000/api/events/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            event_id: event.id,
+            name: senderName,
+            email: senderEmail,
+            message,
+          }),
+        });
+
+      if (!res.ok) throw new Error("Failed");
+
+      Swal.fire({
+        icon: "success",
+        title: "Message sent",
+        text: "Your message was sent successfully.",
+        confirmButtonColor: "#16a34a",
+      });
+
+      setSenderName("");
+      setSenderEmail("");
+      setMessage("");
+
+      setShowMessageForm(false);
+
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to send message. Please try again.",
+        confirmButtonColor: "#dc2626",
+      });
+      console.error(err);
+    } finally {
+      setSending(false);
+    }
+  };
+
   const formatDate = d =>
     new Date(d + "T00:00:00").toLocaleDateString("en-GB", {
       weekday: "long",
@@ -290,9 +359,15 @@ function EventDetailModal({ event, onClose }) {
             {event.location || "N/A"}
           </DetailRow>
 
-          <DetailRow icon={<User />} label="Organizer">
+          <DetailRow icon={<User />} label="Organizer / Name">
             {event.organizer || "N/A"}
           </DetailRow>
+
+          {event.event_type === "invite" && (
+            <DetailRow icon={<User />} label="Invite by Organization">
+              {event.organization_invite || "N/A"}
+            </DetailRow>
+          )}
 
           {event.phone && (
             <DetailRow icon={<Phone />} label="Telegram">
@@ -322,6 +397,68 @@ function EventDetailModal({ event, onClose }) {
             >
               <EventFiles files={event.files} />
             </DetailRow>
+          )}
+
+          {event.event_type === "invite" && event.organizer_email && (
+            <div className="pt-2">
+              {!showMessageForm ? (
+                <button
+                  type="button"
+                  onClick={() => setShowMessageForm(true)}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  Message Organizer
+                </button>
+              ) : (
+                <div className="border rounded-xl p-4 space-y-3 bg-green-50">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-green-700">
+                      Send Message to Organizer
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowMessageForm(false)}
+                      className="text-gray-500 hover:text-red-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <input
+                    type="text"
+                    value={senderName}
+                    onChange={(e) => setSenderName(e.target.value)}
+                    placeholder="Your name"
+                    className="w-full border rounded-md p-2"
+                  />
+
+                  <input
+                    type="email"
+                    value={senderEmail}
+                    onChange={(e) => setSenderEmail(e.target.value)}
+                    placeholder="Your email"
+                    className="w-full border rounded-md p-2"
+                  />
+
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Your message"
+                    className="w-full border rounded-md p-2"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={sendMessage}
+                    disabled={sending}
+                    className="px-4 py-2 bg-green-600 text-white rounded-md disabled:opacity-60"
+                  >
+                    {sending ? "Sending..." : "Send Message"}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
 
         </div>

@@ -40,7 +40,7 @@ export default function MemberForm({ member, onClose, onSave }) {
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
       <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md">
 
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold text-green-600 mb-4">
           {member ? "Edit Member" : "Add Member"}
         </h2>
 

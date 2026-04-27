@@ -3,6 +3,7 @@ import { api } from "../../API/api";
 import PostForm from "../components/PostForm";
 import MenuButton from "../components/MenuButton";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import { Plus, Newspaper, LayoutGrid } from "lucide-react";
 
 export default function PostAdmin() {
   const [posts, setPosts] = useState([]);
@@ -57,13 +58,34 @@ export default function PostAdmin() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-green-700">Posts / News</h1>
+      <div className="flex items-center justify-between mb-6 p-5 bg-white/70 backdrop-blur-md rounded-3xl border border-white shadow-xl shadow-gray-200/40 transition-all hover:shadow-2xl hover:shadow-gray-300/50">
+
+        <div className="flex items-center gap-5">
+          {/* Icon Container with Gradient Background */}
+          <div className="flex items-center justify-center h-14 w-14 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl shadow-lg shadow-green-200 text-white">
+            <Newspaper size={28} strokeWidth={1.5} />
+          </div>
+
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-black text-gray-800 tracking-tight leading-none">
+              Posts <span className="text-green-600">&</span> News
+            </h1>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mt-1 flex items-center gap-1">
+              <LayoutGrid size={12} /> Management Portal
+            </span>
+          </div>
+        </div>
+
         <button
           onClick={handleNew}
-          className="px-4 py-2 rounded-lg bg-green-700 text-white hover:bg-green-800"
+          className="group flex items-center gap-2 px-7 py-3 rounded-full bg-gray-900 text-white text-xs font-black uppercase tracking-[0.15em] hover:bg-green-600 hover:scale-105 transition-all duration-300 shadow-xl active:scale-95 active:bg-green-700"
         >
-          + New Post
+          <Plus
+            size={18}
+            className="transition-transform duration-300 group-hover:rotate-90 group-hover:scale-110"
+            strokeWidth={3}
+          />
+          <span>Create Post</span>
         </button>
       </div>
 
@@ -165,49 +187,61 @@ export default function PostAdmin() {
       </div>
 
       {/* PAGINATION */}
-      <div className="flex justify-center items-center gap-4 mt-6 mb-6">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((prev) => prev - 1)}
-          className="p-2 text-gray-700 text-xl disabled:opacity-30"
-        >
-          ‹‹
-        </button>
+      <div className="flex items-center justify-between mt-4 px-2">
+        <p className="text-sm text-gray-500">
+          Showing page <span className="font-semibold text-gray-900">{page}</span> of <span className="font-semibold text-gray-900">{lastPage}</span>
+        </p>
 
-        {(() => {
-          // Calculate the 3 pages to show
-          let start = Math.max(1, page - 1);
-          let end = Math.min(lastPage, start + 2);
+        <div className="flex items-center gap-1">
+          {/* Prev Button */}
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-          // If near the end, shift window back
-          if (end - start < 2) {
-            start = Math.max(1, end - 2);
-          }
+          {/* Page Numbers */}
+          <div className="flex items-center gap-1">
+            {(() => {
+              let start = Math.max(1, page - 1);
+              let end = Math.min(lastPage, start + 2);
+              if (end - start < 2) start = Math.max(1, end - 2);
 
-          return [...Array(end - start + 1)].map((_, i) => {
-            const pageNum = start + i;
-            return (
-              <button
-                key={pageNum}
-                onClick={() => setPage(pageNum)}
-                className={`w-10 h-10 rounded-full font-semibold text-lg lg:text-xl
-          ${page === pageNum
-                    ? "bg-green-700 text-white"
-                    : "bg-white shadow"}`}
-              >
-                {pageNum}
-              </button>
-            );
-          });
-        })()}
+              return [...Array(end - start + 1)].map((_, i) => {
+                const pageNum = start + i;
+                const isActive = page === pageNum;
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    className={`min-w-[36px] h-8 px-2 rounded-xl font-bold text-sm transition-all shadow-sm
+                ${isActive
+                        ? "bg-green-600 text-white shadow-green-200"
+                        : "bg-white text-gray-600 hover:border-green-500 border border-transparent"
+                      }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              });
+            })()}
+          </div>
 
-        <button
-          disabled={page === lastPage}
-          onClick={() => setPage((prev) => prev + 1)}
-          className="p-2 text-gray-700 text-xl disabled:opacity-30"
-        >
-          ››
-        </button>
+          {/* Next Button */}
+          <button
+            disabled={page === lastPage}
+            onClick={() => setPage((prev) => prev + 1)}
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <DeleteConfirmModal

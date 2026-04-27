@@ -45,7 +45,7 @@ export default function ApplyForm({ job, onClose }) {
         </button>
 
         {/* Title */}
-        <h2 className="text-3xl font-bold text-green-700 mb-6">
+        <h2 className="text-sm md:text-lg font-bold text-green-700 mb-6">
           {job.title}
         </h2>
 
@@ -125,7 +125,7 @@ export default function ApplyForm({ job, onClose }) {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-green-700 text-white py-3 rounded-lg shadow-lg text-lg font-semibold hover:bg-green-800 transition transform hover:scale-[1.01]"
+            className="w-full bg-green-700 text-white py-2 md:py-3 rounded-lg shadow-lg text-sm md:text-lg font-semibold hover:bg-green-800 transition transform hover:scale-[1.01]"
           >
             Submit Application
           </button>
