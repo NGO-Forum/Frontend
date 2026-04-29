@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api } from "../../API/api";
 
-const PER_PAGE = 10;
+const PER_PAGE = 6;
 
 export default function AdminComments() {
   const [comments, setComments] = useState([]);
@@ -194,56 +194,55 @@ export default function AdminComments() {
                 </tbody>
               </table>
             </div>
-          </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-2 flex flex-col gap-4 bg-white px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
+                <div className="text-sm text-slate-600">
+                  Showing{" "}
+                  <span className="font-bold text-slate-800">{startItem}</span> to{" "}
+                  <span className="font-bold text-slate-800">{endItem}</span> of{" "}
+                  <span className="font-bold text-emerald-700">{comments.length}</span>
+                </div>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
-              <div className="text-sm text-slate-600">
-                Showing{" "}
-                <span className="font-bold text-slate-800">{startItem}</span> to{" "}
-                <span className="font-bold text-slate-800">{endItem}</span> of{" "}
-                <span className="font-bold text-emerald-700">{comments.length}</span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                  disabled={page === 1}
-                  className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${page === 1
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                    disabled={page === 1}
+                    className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${page === 1
                       ? "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400"
                       : "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-emerald-50 hover:text-emerald-700"
-                    }`}
-                >
-                  Prev
-                </button>
-
-                {[...Array(totalPages)].map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPage(i + 1)}
-                    className={`h-10 min-w-[40px] rounded-xl text-sm font-bold transition ${page === i + 1
-                        ? "bg-gradient-to-r from-emerald-600 to-green-500 text-white shadow-md"
-                        : "border border-slate-200 bg-white text-slate-700 hover:bg-emerald-50"
                       }`}
                   >
-                    {i + 1}
+                    Prev
                   </button>
-                ))}
 
-                <button
-                  onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                  disabled={page === totalPages}
-                  className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${page === totalPages
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i + 1)}
+                      className={`h-10 min-w-[40px] rounded-xl text-sm font-bold transition ${page === i + 1
+                        ? "bg-gradient-to-r from-emerald-600 to-green-500 text-white shadow-md"
+                        : "border border-slate-200 bg-white text-slate-700 hover:bg-emerald-50"
+                        }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                    disabled={page === totalPages}
+                    className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${page === totalPages
                       ? "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400"
                       : "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-emerald-50 hover:text-emerald-700"
-                    }`}
-                >
-                  Next
-                </button>
+                      }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </>
       )}
     </div>

@@ -359,15 +359,9 @@ function EventDetailModal({ event, onClose }) {
             {event.location || "N/A"}
           </DetailRow>
 
-          <DetailRow icon={<User />} label="Organizer / Name">
+          <DetailRow icon={<User />} label={event.event_type === "invite" ? "Name" : "Organizer"}>
             {event.organizer || "N/A"}
           </DetailRow>
-
-          {event.event_type === "invite" && (
-            <DetailRow icon={<User />} label="Invite by Organization">
-              {event.organization_invite || "N/A"}
-            </DetailRow>
-          )}
 
           {event.phone && (
             <DetailRow icon={<Phone />} label="Telegram">
@@ -383,6 +377,12 @@ function EventDetailModal({ event, onClose }) {
               >
                 {event.organizer_email}
               </a>
+            </DetailRow>
+          )}
+
+          {event.event_type === "invite" && (
+            <DetailRow icon={<User />} label="Invite by Organization">
+              {event.organization_invite || "N/A"}
             </DetailRow>
           )}
 
@@ -407,13 +407,13 @@ function EventDetailModal({ event, onClose }) {
                   onClick={() => setShowMessageForm(true)}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
-                  Message Organizer
+                  Your Message
                 </button>
               ) : (
                 <div className="border rounded-xl p-4 space-y-3 bg-green-50">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-green-700">
-                      Send Message to Organizer
+                      Send Message
                     </p>
 
                     <button
